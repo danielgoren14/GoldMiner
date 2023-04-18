@@ -2,14 +2,15 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Window extends JFrame {
-    public  static JPanel mainMenu;
+    public  static JPanel menuPanel;
     public  static JPanel gamePanel;
+    //public  static JPanel shopPanel;
 
     public static void main(String[] args) {
     Window window = new Window();
 }
     public Window(){
-        mainMenu = new MainMenu();
+        menuPanel = new MainMenu();
         gamePanel = new GamePanel();
         this.setTitle("The Gold Miner");
         Image icon = new ImageIcon("ObjectPhotos/Icon.png").getImage();
@@ -20,7 +21,7 @@ public class Window extends JFrame {
         this.setResizable(false);
         this.setSize(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
 
-        this.getContentPane().add(mainMenu);
+        this.getContentPane().add(menuPanel);
      this.getContentPane().add(gamePanel);
         this.setVisible(true);
     }
