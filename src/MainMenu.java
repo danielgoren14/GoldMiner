@@ -16,7 +16,7 @@ public class MainMenu extends JPanel{
         this.setDoubleBuffered(true);
         this.setLayout(null);
         this.setBounds(0, 0, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
-
+        MusicEffects musicEffects = new MusicEffects();
         ImageIcon image = Window.upscaleImage("src/ObjectPhotos/MainMenuBackground.png", Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
         this.backgroundImage = new JLabel();
         this.backgroundImage.setBounds(0, 0, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
@@ -31,8 +31,8 @@ public class MainMenu extends JPanel{
         this.startGameButton.setBorderPainted(false);
 
         this.startGameButton.addActionListener((event) -> {
-            //this.add(gamePanel);
             Window.changePanel(Window.gamePanel,this);
+            musicEffects.playTransition();
         });
         this.add(startGameButton);
 
@@ -49,10 +49,7 @@ public class MainMenu extends JPanel{
         this.add(instructionsButton);
     }
 
-    /*public static ImageIcon upscaleImage(String source, int width , int height){
-        return new ImageIcon(new ImageIcon(source).getImage().getScaledInstance(
-                width, height, Image.SCALE_DEFAULT));
-    }*/
+
 
 }
 
