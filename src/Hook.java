@@ -1,5 +1,31 @@
-import javax.swing.*;
+import java.awt.*;
 
-public class Hook extends JPanel {
+public class Hook {
+private static int x;
+private static int y;
+private static int height;
+private static int width;
 
+    public Hook(int x, int y, int height, int width) {
+        this.x = x;
+        this.y = y;
+        this.height = height;
+        this.width = width;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public int getWidth() {
+        return width;
+    }
 }
