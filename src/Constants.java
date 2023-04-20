@@ -1,7 +1,14 @@
+import javax.swing.*;
+
 public class Constants {
 
-        public static final int WINDOW_WIDTH = 1200;
-        public static final int WINDOW_HEIGHT = 700;
+    public static final int WINDOW_WIDTH = 1200;
+    public static final int WINDOW_HEIGHT = 700;
+    public static final String GAME_RULE = """
+             Controls 
+             Drop claw by clicking down arrow , \n
+             \n"toss dynamite with up arrow key (when dragging an item).
+            """;
 
         public static final int BUTTON_WIDTH = 150;
         public static final int BUTTON_HEIGHT = 50;
@@ -10,8 +17,8 @@ public class Constants {
         public static final int BUTTON_SPACE_HEIGHT = 50;
 
 
-        public static final int MENU_LABEL_WIDTH = 300;
-        public static final int MENU_LABEL_HEIGHT = 250;
+    public static final int MENU_LABEL_WIDTH = 300;
+    public static final int MENU_LABEL_HEIGHT = 250;
 
 
 

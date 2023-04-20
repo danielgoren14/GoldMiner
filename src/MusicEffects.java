@@ -26,11 +26,11 @@ public class MusicEffects {
         clip.stop();
     }
     public void playTransition(){
-        setFile("src/ObjectPhotos/transitionSoundEffect.wav");
+        setFile("src/SoundEffects/transitionSoundEffect.wav");
         play();
     }
     public void playMoneySound(){
-        setFile("src/ObjectPhotos/CashRegisterSoundEffect.wav");
+        setFile("src/SoundEffects/CashRegisterSoundEffect.wav");
         play();
     }
 }
