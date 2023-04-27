@@ -30,7 +30,7 @@ public class Window extends JFrame {
         this.getContentPane().add(shopPanel);
         this.setLocationRelativeTo(null);
         this.setVisible(true);
-        refreshKeyListener();
+       // refreshKeyListener();
 
 
     }
@@ -38,6 +38,7 @@ public class Window extends JFrame {
     public static void changePanel(JPanel newPanel, JPanel oldPanel) {
         try {
             newPanel.setVisible(true);
+            newPanel.requestFocusInWindow();
             oldPanel.setVisible(false);
         } catch (NullPointerException e) {
             e.printStackTrace();
@@ -52,7 +53,6 @@ public class Window extends JFrame {
 
     public static void changeKeys(KeyListener newKeyListener) {
         keyListener = newKeyListener;
-
     }
 
     public void refreshKeyListener() {
@@ -60,6 +60,7 @@ public class Window extends JFrame {
             while (true) {
                 this.removeKeyListener(keyListener);
                 this.addKeyListener(keyListener);
+
             }
         }).start();
 

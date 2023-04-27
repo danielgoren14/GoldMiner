@@ -120,7 +120,7 @@ public class GamePanel extends JPanel implements KeyListener {
         switch (e.getKeyCode()) {
             case 40 -> {
                hook.reeling=true;
-            }
+            }default -> System.out.println(e.getKeyCode());
         }
     }
 

@@ -21,12 +21,13 @@ public class Utils {
             g.drawString(line, x, y += g.getFontMetrics().getHeight());
     }
 
-
-   /* public static boolean testIntersection(Shape shapeA, Shape shapeB) {
-        Area areaA = new Area(shapeA);
-        areaA.intersect(new Area(shapeB));
-        return !areaA.isEmpty();
-    }*/
+    public static void sleep(int milSc){
+        try {
+            Thread.sleep(milSc);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
     public static int randomMiniGold(){
         Random random = new Random();
         return random.nextInt(10,21);
