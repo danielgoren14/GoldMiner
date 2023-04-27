@@ -58,5 +58,5 @@ public class Constants {
     public static final int MINI_ROCK_WEIGHT = 3;
     public static final int MINI_ROCK_SIZE = 25;
     public static final ImageIcon MINI_ROCK_ICON = Utils.upscaleImage("src/ObjectPhotos/rock_big.png", MINI_ROCK_SIZE, MINI_ROCK_SIZE);
-
+public static final int HOOK_SIZE =20;
 }

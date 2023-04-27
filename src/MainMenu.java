@@ -1,23 +1,21 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 
-public class MainMenu extends JPanel implements KeyListener, MouseListener {
-   private JButton startGameButton;
+public class MainMenu extends JPanel implements KeyListener {
+    private JButton startGameButton;
     private JButton instructionsButton;
     private JButton closeInstructionButton;
     private JButton shop;
-    private boolean isClicked = false;
+   private boolean isClicked = false;
 
     public MainMenu() {
         this.setDoubleBuffered(true);
         this.setLayout(null);
-
+        this.addKeyListener(this);
         this.setBounds(0, 0, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
         MusicEffects musicEffects = new MusicEffects();
+
         this.startGameButton = new JButton();
         this.startGameButton.setBounds(525, 150, Constants.START_BUTTON_WIDTH, Constants.START_BUTTON_HEIGHT);
         this.startGameButton.setOpaque(false);
@@ -47,6 +45,7 @@ public class MainMenu extends JPanel implements KeyListener, MouseListener {
         closeInstructionButton.setFont(new Font("Arial", Font.BOLD, 40));
         closeInstructionButton.setOpaque(false);
         closeInstructionButton.setVisible(false);
+        closeInstructionButton.setEnabled(false);
         closeInstructionButton.setContentAreaFilled(false);
         closeInstructionButton.setBorderPainted(false);
         closeInstructionButton.setBounds(Constants.BUTTON_EXIT_X, Constants.BUTTON_EXIT_Y,
@@ -54,7 +53,7 @@ public class MainMenu extends JPanel implements KeyListener, MouseListener {
         this.add(closeInstructionButton);
         closeInstructionButton.addActionListener(e -> {
             musicEffects.playTransition();
-            isClicked = false;
+           isClicked = false;
             closeInstructionButton.setVisible(false);
             closeInstructionButton.setEnabled(false);
             this.instructionsButton.setEnabled(true);
@@ -73,30 +72,32 @@ public class MainMenu extends JPanel implements KeyListener, MouseListener {
             musicEffects.playTransition();
         });
 
-
+        this.setVisible(false);
     }
 
     public void instructions(Graphics graphics) {
         startGameButton.setEnabled(false);
+
         instructionsButton.setEnabled(false);
         ImageIcon panel = Utils.upscaleImage("src/ObjectPhotos/panel.png", Constants.INSTRUCTION_WINDOW_WIDTH,
                 Constants.INSTRUCTIONS_WINDOW_HEIGHT);
-        ImageIcon text = Utils.upscaleImage("src/ObjectPhotos/img_4.png", 500, 300);
+      //  ImageIcon text = Utils.upscaleImage("src/ObjectPhotos/img_4.png", 500, 300);
         panel.paintIcon(this, graphics, Constants.INSTRUCTION_WINDOW_X, Constants.INSTRUCTION_WINDOW_Y);
-        graphics.setFont(new Font("Arial" ,Font.BOLD ,35));
-        graphics.drawString("Rules and Instructions:" ,Constants.WINDOW_WIDTH/3,
-                Constants.INSTRUCTION_WINDOW_Y+Constants.INSTRUCTION_MARGIN_FROM_UP );
-        graphics.setFont(new Font("Arial" ,Font.BOLD ,20));
-        // graphics.drawString("Use your claw and reel to mine gold and other treasures out of the earth , your claw will swing back and forth . Press the down arrow to lower it . Once your claw has grabbed something it will begin to reel up.:" ,Constants.WINDOW_WIDTH/2,Constants.INSTRUCTION_WINDOW_Y+Constants.INSTRUCTION_MARGIN_FROM_UP );
-drawString(graphics  ,"Use your claw and reel to mine gold and other treasures out of the earth, your\n claw will swing back and forth. " +
-                "Press the down arrow to lower it. Once your\nclaw has grabbed something it will begin to reel up . Heavy objects like rocks \nand large pieces of gold will be harder to reel up." +
-                "grab bag contains random \namount of gold, strength power up or a TNT."+
-                "between levels you can buy item \nthat can help you. \n\nCollect the target amount of money by the end of the level , " +
-                "if you dont meet\nyour end goal ,it is game over, Your money carries with you from one level to\nthe next." ,
-        Constants.WINDOW_WIDTH/4-65,Constants.INSTRUCTION_WINDOW_Y+Constants.INSTRUCTION_MARGIN_FROM_UP+50 );
+        graphics.setFont(new Font("Arial", Font.BOLD, 35));
+        graphics.drawString("Rules and Instructions:", Constants.WINDOW_WIDTH / 3,
+                Constants.INSTRUCTION_WINDOW_Y + Constants.INSTRUCTION_MARGIN_FROM_UP);
+        graphics.setFont(new Font("Arial", Font.BOLD, 20));
+        drawString(graphics,
+                "Use your claw and reel to mine gold and other treasures out of the earth, your\n claw will swing back and forth. " +
+                        "Press the down arrow to lower it. Once your\nclaw has grabbed something it will begin to reel up . Heavy objects like rocks \nand large pieces of gold will be harder to reel up." +
+                        "grab bag contains random \namount of gold, strength power up or a TNT." +
+                        "between levels you can buy item \nthat can help you. \n\nCollect the target amount of money by the end of the level , " +
+                        "if you dont meet\nyour end goal ,it is game over, Your money carries with you from one level to\nthe next.",
+                Constants.WINDOW_WIDTH / 4 - 65, Constants.INSTRUCTION_WINDOW_Y + Constants.INSTRUCTION_MARGIN_FROM_UP + 50);
 
         // text.paintIcon(this, graphics, Constants.INSTRUCTION_WINDOW_X + Constants.INSTRUCTION_MARGIN_FROM_LEFT, Constants.INSTRUCTION_WINDOW_Y + Constants.INSTRUCTION_MARGIN_FROM_UP);
     }
+
     void drawString(Graphics g, String text, int x, int y) {
         for (String line : text.split("\n"))
             g.drawString(line, x, y += g.getFontMetrics().getHeight());
@@ -109,49 +110,29 @@ drawString(graphics  ,"Use your claw and reel to mine gold and other treasures o
         ImageIcon image = Utils.upscaleImage("src/ObjectPhotos/MainMenuBackground.png",
                 Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
         image.paintIcon(this, g, 0, 0);
-        if (isClicked) {
-            instructions(g);
+
+      if (isClicked) {
+         instructions(g);
         }
         repaint();
     }
 
     @Override
-    public void mouseClicked(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mousePressed(MouseEvent e) {
-        System.out.println(e.getX() + "  " + e.getY());
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-
-
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-
-    }
-
-
-    @Override
     public void keyTyped(KeyEvent e) {
-
     }
 
     @Override
     public void keyPressed(KeyEvent e) {
         switch (e.getKeyCode()) {
             case 10 -> {
-
+                startGameButton.doClick();
+                closeInstructionButton.doClick();
+            }
+            case 27 -> {
+                closeInstructionButton.doClick();
+            }
+            case 73 -> {
+                instructionsButton.doClick();
             }
             default -> System.out.println(e.getKeyCode());
         }
@@ -159,7 +140,7 @@ drawString(graphics  ,"Use your claw and reel to mine gold and other treasures o
 
     @Override
     public void keyReleased(KeyEvent e) {
-
     }
+
 }
 
