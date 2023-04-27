@@ -29,7 +29,7 @@ public class MusicEffects {
         setFile("src/SoundEffects/transitionSoundEffect.wav");
         play();
     }
-    public void playMoneySound(){
+    public  void playMoneySound(){
         setFile("src/SoundEffects/CashRegisterSoundEffect.wav");
         play();
     }

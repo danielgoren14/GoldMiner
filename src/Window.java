@@ -5,17 +5,18 @@ public class Window extends JFrame {
     public static JPanel menuPanel;
     public static JPanel gamePanel;
     public static JPanel shopPanel;
-  public  static KeyListener keyListener;
+    public static KeyListener keyListener;
 
     public static void main(String[] args) {
-         new Window();
+        new Window();
     }
 
     public Window() {
+        GoldMiner goldMiner = new GoldMiner();
         menuPanel = new MainMenu();
         gamePanel = new GamePanel();
-        shopPanel = new Shop();
-        changePanel(menuPanel,null);
+        shopPanel = new Shop(goldMiner);
+        changePanel(menuPanel, null);
         this.addKeyListener(keyListener);
         this.setTitle("The Gold Miner");
         this.setIconImage(new ImageIcon("src/ObjectPhotos/GoldMinerIcon.jpg").getImage());
@@ -29,9 +30,7 @@ public class Window extends JFrame {
         this.getContentPane().add(shopPanel);
         this.setLocationRelativeTo(null);
         this.setVisible(true);
-        dd();
-
-
+        refreshKeyListener();
 
 
     }
@@ -40,33 +39,31 @@ public class Window extends JFrame {
         try {
             newPanel.setVisible(true);
             oldPanel.setVisible(false);
-        }catch (NullPointerException e){
-
+        } catch (NullPointerException e) {
+            e.printStackTrace();
         }
         try {
             changeKeys(newPanel.getKeyListeners()[0]);
-        }catch (ArrayIndexOutOfBoundsException e){
+        } catch (ArrayIndexOutOfBoundsException e) {
             e.printStackTrace();
         }
 
     }
-    public static void changeKeys(KeyListener newKeyListener){
-        keyListener= newKeyListener;
+
+    public static void changeKeys(KeyListener newKeyListener) {
+        keyListener = newKeyListener;
 
     }
-    public  void dd() {
+
+    public void refreshKeyListener() {
         new Thread(() -> {
-            while (true){
+            while (true) {
                 this.removeKeyListener(keyListener);
                 this.addKeyListener(keyListener);
             }
         }).start();
 
     }
-
-
-
-
 
 
 }

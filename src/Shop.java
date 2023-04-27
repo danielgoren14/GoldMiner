@@ -1,184 +1,239 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 
-public class Shop extends JPanel implements MouseListener, KeyListener {
+public class Shop extends JPanel implements KeyListener {
+    private int tntPrice = 200;
+    private int luckPrice = 3;
+    private int strengthPrice = 5;
+    private boolean tntInfo;
+    private boolean luckInfo;
+    private boolean strengthInfo;
+    private GoldMiner player;
+    private JButton buyTntButton;
+    private JButton buyStrengthButton;
+    private JButton buyLuckButton;
+    private JButton nextLevelButton;
 
-    //שדות
-    private ImageIcon backGround;
-    private ImageIcon table;
-    private ImageIcon shopKeeper;
-    private ImageIcon tnt;
-    private ImageIcon luck;
-    private ImageIcon strength;
-    private JLabel showLocationOnTNT;
-    private JLabel showLocationOnStrength;
-    private JLabel showLocationOnLuck;
-    private JButton buyTNT;
-    private JButton buyStrength;
-    private JButton buyLuck;
-    private boolean tntIsBought;
-    private boolean strengthIsBought;
-    private int currentSelect;
-    private ImageIcon textPanel;
+    public void setTntPrice() {
+        this.tntPrice += Constants.SHOP_TNT_PRICE_INCREASE;
+    }
 
-    //קבועים
-    final int TABLE_WIDTH = Constants.WINDOW_WIDTH - 200;
-    final int TABLE_HEIGHT = 200;
-    final int SHOPKEEPER_WIDTH = 800;
-    //final int SHOPKEEPER_HIGH =Constants.WINDOW_HEIGHT- TABLE_HEIGHT-shopKeeper.getIconHeight();
-    final int TNT_WIDTH = 100;
-    final int TNT_HEIGHT = 150;
-    final int SPACE_BETWEEN_PRODUCTS = 200;
-    final int TNT_X = SHOPKEEPER_WIDTH - SPACE_BETWEEN_PRODUCTS;
-    final int LUCK_X = TNT_X - SPACE_BETWEEN_PRODUCTS;
-    final int STRENGTH_X = LUCK_X - SPACE_BETWEEN_PRODUCTS;
-    final int STRENGTH_ID = 1;
-    final int LUCK_ID = 2;
-    final int TNT_ID = 3;
-    final int PRODUCT_Y = 550;
+    public void setLuckPrice() {
+        this.luckPrice = this.luckPrice * Constants.SHOP_PRICE_MULTIPLIER;
+    }
 
-    public Shop() {
+    public void setStrengthPrice() {
+        this.strengthPrice = this.strengthPrice * Constants.SHOP_PRICE_MULTIPLIER;
+    }
+
+    public Shop(GoldMiner player) {
+        this.player = player;
+        MusicEffects musicEffects = new MusicEffects();
+        this.tntInfo = false;
+        this.strengthInfo = false;
+        this.luckInfo = false;
         this.setBounds(0, 0, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
-        this.backGround = Utils.upscaleImage("src/ObjectPhotos/img.png",
-                Constants.WINDOW_WIDTH,
-                Constants.WINDOW_HEIGHT);
         this.setLayout(null);
-
-
-        this.table = Utils.upscaleImage("src/ObjectPhotos/shop_table.png", TABLE_WIDTH, TABLE_HEIGHT);
-
-        this.shopKeeper = Utils.upscaleImage("src/ObjectPhotos/shopkeeper.jpg", 250, 255);
-
-        this.tnt = Utils.upscaleImage("src/ObjectPhotos/tnt.png", TNT_WIDTH, TNT_HEIGHT);
-
-//        this.showLocationOnTNT = new JLabel();
-//        this.showLocationOnTNT.setBounds(500,500,1,1);
-//        this.showLocationOnTNT.setText("Press enter \n to buy TNT");
-//        this.showLocationOnTNT.setHorizontalTextPosition(JLabel.BOTTOM);
-//        this.showLocationOnTNT.setVerticalTextPosition(JLabel.CENTER);
-//        this.add(showLocationOnTNT);
-//        this.showLocationOnTNT.setVisible(true);
-
-        this.luck = Utils.upscaleImage("src/ObjectPhotos/lucky_clover.png",
-                TNT_WIDTH,
-                TNT_HEIGHT);
-
-        this.strength = Utils.upscaleImage("src/ObjectPhotos/strength_drink.png",
-                TNT_WIDTH,
-                TNT_HEIGHT);
-
-        // this.addMouseListener(new MainMenu());
         this.setVisible(false);
         this.addKeyListener(this);
 
-        this.textPanel = Utils.upscaleImage("src/ObjectPhotos/panel.png", 150, 50);
-        //this.textPanel.
-        this.buyTNT = new JButton();
-        this.buyTNT.setBounds(TNT_X, PRODUCT_Y, 150, 50);
-        this.buyTNT.setIcon(textPanel);
-        this.buyTNT.setContentAreaFilled(true);
-        this.add(this.buyTNT);
 
-        this.buyLuck = new JButton();
-        this.buyLuck.setBounds(LUCK_X, PRODUCT_Y, 150, 50);
-        this.buyLuck.setIcon(textPanel);
-        this.buyLuck.setContentAreaFilled(true);
-        this.add(this.buyLuck);
+        this.buyTntButton = new JButton("TNT " + tntPrice + "$");
+        this.buyTntButton.setFont(new Font("Ariel", Font.BOLD, 17));
+        this.buyTntButton.setHorizontalTextPosition(JButton.CENTER);
+        this.buyTntButton.setVerticalTextPosition(JButton.CENTER);
+        this.buyTntButton.setBounds(Constants.TNT_X, Constants.SHOP_PRODUCT_BUTTON_Y, Constants.SHOP_BUTTON_WIDTH, Constants.SHOP_BUTTON_HEIGHT);
+        this.buyTntButton.setIcon(Constants.SHOP_BUTTON_BACKGROUND);
+        this.buyTntButton.setContentAreaFilled(true);
+        this.add(this.buyTntButton);
+        this.buyTntButton.addActionListener((event) -> {
+            if (player.canBuy(tntPrice)) {
+                player.addTntCount();
+                player.addCurrentMoney(-tntPrice);
+                setTntPrice();
+                this.buyTntButton.setText("TNT " + tntPrice + "$");
+                musicEffects.playMoneySound();
+            }
+        });
+        this.buyTntButton.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
 
-        this.buyStrength = new JButton();
-        this.buyStrength.setBounds(STRENGTH_X, PRODUCT_Y, 150, 50);
-        this.buyStrength.setIcon(textPanel);
-        this.buyStrength.setContentAreaFilled(true);
-        this.add(this.buyStrength);
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                tntInfo = true;
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                tntInfo = false;
+            }
+        });
+
+
+        this.buyLuckButton = new JButton("LUCK " + luckPrice + "$");
+        this.buyLuckButton.setFont(new Font("Ariel", Font.BOLD, 16));
+        this.buyLuckButton.setBounds(Constants.LUCK_X, Constants.SHOP_PRODUCT_BUTTON_Y, Constants.SHOP_BUTTON_WIDTH, Constants.SHOP_BUTTON_HEIGHT);
+        this.buyLuckButton.setHorizontalTextPosition(JButton.CENTER);
+        this.buyLuckButton.setVerticalTextPosition(JButton.CENTER);
+        this.buyLuckButton.setIcon(Constants.SHOP_BUTTON_BACKGROUND);
+        this.buyLuckButton.setContentAreaFilled(true);
+        this.add(this.buyLuckButton);
+        this.buyLuckButton.addActionListener((event) -> {
+            if (player.canBuy(luckPrice)) {
+                player.addLuck();
+                player.addCurrentMoney(-luckPrice);
+                setLuckPrice();
+                this.buyLuckButton.setText("LUCK " + luckPrice + "$");
+                musicEffects.playMoneySound();
+            }
+        });
+        this.buyLuckButton.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                luckInfo = true;
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                luckInfo = false;
+            }
+        });
+
+
+        this.buyStrengthButton = new JButton("STRENGTH " + strengthPrice + "$");
+        this.buyStrengthButton.setBounds(Constants.STRENGTH_X, Constants.SHOP_PRODUCT_BUTTON_Y, Constants.SHOP_BUTTON_WIDTH,
+                Constants.SHOP_BUTTON_HEIGHT);
+        this.buyStrengthButton.setHorizontalTextPosition(JButton.CENTER);
+        this.buyStrengthButton.setVerticalTextPosition(JButton.CENTER);
+        this.buyStrengthButton.setIcon(Constants.SHOP_BUTTON_BACKGROUND);
+        this.buyStrengthButton.setContentAreaFilled(true);
+        this.add(this.buyStrengthButton);
+        this.buyStrengthButton.addActionListener((event) -> {
+            if (player.canBuy(strengthPrice)) {
+                player.addStrength();
+                player.addCurrentMoney(-strengthPrice);
+                setStrengthPrice();
+                this.buyStrengthButton.setText("STRENGTH " + strengthPrice + "$");
+
+                musicEffects.playMoneySound();
+            }
+        });
+        this.buyStrengthButton.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                strengthInfo = true;
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                strengthInfo = false;
+            }
+        });
+
+
+        this.nextLevelButton = new JButton("START NEXT LEVEL");
+        this.nextLevelButton.setFont(new Font("Ariel", Font.BOLD, 17));
+        this.nextLevelButton.setBounds(Constants.SHOP_NEXT_LEVEL_BUTTON_X, Constants.SHOP_NEXT_LEVEL_BUTTON_Y,
+                Constants.SHOP_NEXT_LEVEL_BUTTON_WIDTH, Constants.SHOP_NEXT_LEVEL_BUTTON_HEIGHT);
+        this.nextLevelButton.setHorizontalTextPosition(JButton.CENTER);
+        this.nextLevelButton.setVerticalTextPosition(JButton.CENTER);
+        this.nextLevelButton.setIcon(Constants.SHOP_NEXT_LEVEL_BACKGROUND);
+        this.nextLevelButton.setContentAreaFilled(true);
+        this.add(nextLevelButton);
+        this.nextLevelButton.addActionListener((event) -> {
+            //TODO
+        });
+
     }
-
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        this.backGround.paintIcon(this, g, 0, 0);
-        this.table.paintIcon(this, g, 100, Constants.WINDOW_HEIGHT - TABLE_HEIGHT);
-        this.shopKeeper.paintIcon(this, g, SHOPKEEPER_WIDTH, Constants.WINDOW_HEIGHT - TABLE_HEIGHT - shopKeeper.getIconHeight());
-        this.tnt.paintIcon(this, g, TNT_X, Constants.WINDOW_HEIGHT - TABLE_HEIGHT - shopKeeper.getIconHeight() + 120);
-        this.luck.paintIcon(this, g, LUCK_X, Constants.WINDOW_HEIGHT - TABLE_HEIGHT - shopKeeper.getIconHeight() + 120);
-        this.strength.paintIcon(this, g, STRENGTH_X, Constants.WINDOW_HEIGHT - TABLE_HEIGHT - shopKeeper.getIconHeight() + 120);
+        Constants.SHOP_BACKGROUND.paintIcon(this, g, 0, 0);
+        Constants.SHOP_TABLE.paintIcon(this, g, Constants.SHOP_TABLE_X, Constants.SHOP_TABLE_HEIGHT);
+        Constants.SHOPKEEPER_ICON.paintIcon(this, g, Constants.SHOPKEEPER_X, Constants.SHOPKEEPER_ICON.getIconHeight());
+        Constants.SHOP_TNT_ICON.paintIcon(this, g, Constants.TNT_X, Constants.SHOP_TABLE_HEIGHT - Constants.SHOP_ITEM_HEIGHT);
+        Constants.SHOP_LUCK_ICON.paintIcon(this, g, Constants.LUCK_X, Constants.SHOP_TABLE_HEIGHT - Constants.SHOP_ITEM_HEIGHT);
+        Constants.SHOP_STRENGTH_ICON.paintIcon(this, g, Constants.STRENGTH_X, Constants.SHOP_TABLE_HEIGHT - Constants.SHOP_ITEM_HEIGHT);
+        Constants.SHOP_STATS_GOLD_ICON.paintIcon(this, g, Constants.SHOP_STATS_ICON_X, Constants.SHOP_STATS_GOLD_ICON_Y);
+        Constants.SHOP_STATS_LUCK_ICON.paintIcon(this, g, Constants.SHOP_STATS_ICON_X, Constants.SHOP_STATS_LUCK_ICON_Y);
+        Constants.SHOP_STATS_STRENGTH_ICON.paintIcon(this, g, Constants.SHOP_STATS_ICON_X, Constants.SHOP_STATS_STRENGTH_ICON_Y);
+        Constants.SHOP_STATS_TNT_ICON.paintIcon(this, g, Constants.SHOP_STATS_ICON_X, Constants.SHOP_STATS_TNT_ICON_Y);
         g.setColor(Color.black);
-        g.setFont(new Font("Arial", Font.BOLD, 20));
-        g.drawString("HI",TNT_X,PRODUCT_Y);
-        //Graphics2D g2 = (Graphics2D) g;
+        g.setFont(new Font("Arial", Font.BOLD, 35));
+        Utils.drawString(g, "Gold: " + player.getCurrentMoney() + "$\nLuck: " + player.getLuck() + "\nStrength: " + player.getStrength() + "\nTNT: " +
+                player.getTntCount(), Constants.SHOP_CURRENT_STATS_X, Constants.SHOP_CURRENT_STATS_Y);
+        if (luckInfo) {
+            setInfoTab(g, "help you earn more loot per \nobject\nprice: " + luckPrice + " $");
+        }
+        if (tntInfo) {
+            setInfoTab(g, "you can blow up objects you \ndont want \nprice: " + tntPrice + " $");
+        }
+        if (strengthInfo) {
+            setInfoTab(g, "help you reel loot faster \nprice: " + strengthPrice + " $");
+        }
         repaint();
     }
 
-    private boolean isBought() {
-        boolean result = false;
-
-        return result;
-    }
-
-    @Override
-    public void mouseClicked(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mousePressed(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-
+    public void setInfoTab(Graphics g, String text) {
+        Constants.SHOP_INFO_SCREEN.paintIcon(this, g, Constants.SHOP_INFO_SCREEN_X, Constants.SHOP_INFO_SCREEN_Y);
+        Utils.drawString(g, text, Constants.SHOP_INFO_SCREEN_TEXT_X, Constants.SHOP_INFO_SCREEN_Y);
     }
 
     @Override
     public void keyTyped(KeyEvent e) {
-
-    }
-
-
-    private int getCurrentSelect(int changeInValue) {
-        int temp = this.currentSelect + changeInValue;
-        int result = temp;
-        if (temp == 0) {
-            result = 1;
-        } else if (temp == 4) {
-            result = 3;
-        }
-        return result;
     }
 
     @Override
     public void keyPressed(KeyEvent e) {
-
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
         switch (e.getKeyChar()) {
-            case 'z':
-                System.out.println("buyTNT");
-                break;
-            case 'x':
-                System.out.println("buy luck");
-                break;
-            case 'c':
-                System.out.println("buy");
-                break;
+            case 'z' -> System.out.println("buyTNT");
+            case 'x' -> System.out.println("buy luck");
+            case 'c' -> System.out.println("buy");
         }
-
     }
-
 }

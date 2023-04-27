@@ -87,7 +87,7 @@ public class MainMenu extends JPanel implements KeyListener {
         graphics.drawString("Rules and Instructions:", Constants.WINDOW_WIDTH / 3,
                 Constants.INSTRUCTION_WINDOW_Y + Constants.INSTRUCTION_MARGIN_FROM_UP);
         graphics.setFont(new Font("Arial", Font.BOLD, 20));
-        drawString(graphics,
+        Utils.drawString(graphics,
                 "Use your claw and reel to mine gold and other treasures out of the earth, your\n claw will swing back and forth. " +
                         "Press the down arrow to lower it. Once your\nclaw has grabbed something it will begin to reel up . Heavy objects like rocks \nand large pieces of gold will be harder to reel up." +
                         "grab bag contains random \namount of gold, strength power up or a TNT." +
@@ -98,10 +98,10 @@ public class MainMenu extends JPanel implements KeyListener {
         // text.paintIcon(this, graphics, Constants.INSTRUCTION_WINDOW_X + Constants.INSTRUCTION_MARGIN_FROM_LEFT, Constants.INSTRUCTION_WINDOW_Y + Constants.INSTRUCTION_MARGIN_FROM_UP);
     }
 
-    void drawString(Graphics g, String text, int x, int y) {
+   /* void drawString(Graphics g, String text, int x, int y) {
         for (String line : text.split("\n"))
             g.drawString(line, x, y += g.getFontMetrics().getHeight());
-    }
+    }*/
 
 
     @Override

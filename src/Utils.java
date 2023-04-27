@@ -16,8 +16,9 @@ public class Utils {
                 width, height, Image.SCALE_DEFAULT));
     }
 
-    public void draw(JPanel panel,Graphics g, ImageIcon img , int x , int y){
-        img.paintIcon(panel,  g  , x , y );
+    public static void drawString(Graphics g, String text, int x, int y) {
+        for (String line : text.split("\n"))
+            g.drawString(line, x, y += g.getFontMetrics().getHeight());
     }
 
 

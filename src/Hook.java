@@ -93,13 +93,6 @@ public class Hook extends Rectangle {
   //     g.drawLine(this.x, this.y, (int) xx*xRatio, (int) yy*xRatio);
     }
 
-    //    public static void sendHookToMine () {
-//        new Thread(() -> {
-//            while (true) {
-//
-//
-//
-//    }
     public void hookSwing() {
         new Thread(() -> {
             while (true) {
