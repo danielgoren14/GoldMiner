@@ -39,9 +39,8 @@ public class GamePanel extends JPanel implements KeyListener {
                 Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT - 150);
         bottom.paintIcon(this, g, 0, 150);
 
-        ImageIcon reel = Utils.upscaleImage("src/ObjectPhotos/reel.png",
-                30, 50);
-        reel.paintIcon(this, g, Constants.WINDOW_WIDTH / 2 - 50, 100);
+        ImageIcon reel = Utils.upscaleImage("src/ObjectPhotos/reel.png", 30, 50);
+        reel.paintIcon(this, g,this.hook.x-5 , this.hook.y-45);
 
         hook.paintHook(this, g);
 
