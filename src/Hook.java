@@ -24,7 +24,6 @@ public class Hook extends Rectangle {
        // this.owner = owner;
         this.lootCurrentlyPulling = null;
         hookMovement();
-
     }
 
     public boolean isOutOfBorder() {
@@ -36,6 +35,7 @@ public class Hook extends Rectangle {
         g2.setStroke(new BasicStroke(5));
         icon.paintIcon(panel, g, (int) this.xHeadLine - 5, (int) this.yHeadLine);
         line(g);
+        panel.setDoubleBuffered(true);
     }
 
     public void line(Graphics g) {
@@ -85,7 +85,7 @@ public class Hook extends Rectangle {
         new Thread(() -> {
             while (true) {
                 sendHook();
-                this.yHeadLine = this.y + 10;
+                this.yHeadLine = this.y +15;
                 if (this.moving) {
                     if (this.rightDirection) {
                         this.xHeadLine++;

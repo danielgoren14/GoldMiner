@@ -33,6 +33,7 @@ public class Shop extends JPanel implements KeyListener {
         this.tntInfo = false;
         this.strengthInfo = false;
         this.luckInfo = false;
+        this.setDoubleBuffered(true);
         this.setBounds(0, 0, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
         this.setLayout(null);
         this.setVisible(false);

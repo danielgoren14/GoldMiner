@@ -63,7 +63,6 @@ public class MainMenu extends JPanel implements KeyListener {
 
     public void instructions(Graphics graphics) {
         startGameButton.setEnabled(false);
-
         instructionsButton.setEnabled(false);
         ImageIcon panel = Utils.upscaleImage("src/ObjectPhotos/panel.png", Constants.INSTRUCTION_WINDOW_WIDTH,
                 Constants.INSTRUCTIONS_WINDOW_HEIGHT);
@@ -73,10 +72,9 @@ public class MainMenu extends JPanel implements KeyListener {
                 Constants.INSTRUCTION_WINDOW_Y + Constants.INSTRUCTION_MARGIN_FROM_UP);
         graphics.setFont(new Font("Arial", Font.BOLD, 20));
         Utils.drawString(graphics,
-                "Use your claw and reel to mine gold and other treasures out of the earth, your\n claw will swing back and forth. " +
-                        "Press the down arrow to lower it. Once your\nclaw has grabbed something it will begin to reel up . Heavy objects like rocks \nand large pieces of gold will be harder to reel up." +
-                        "grab bag contains random \namount of gold, strength power up or a TNT." +
-                        "between levels you can buy item \nthat can help you. \n\nCollect the target amount of money by the end of the level , " +
+                "Use your claw and reel to mine gold and other treasures underneath the \nground, your claw will swing back and forth. " +
+                        "Press the down arrow to lower it. \nOnce your claw has grabbed something it will begin to reel up . Heavy objects \nlike rocks and large pieces of gold will be harder to reel up." +
+                        "between levels you \ncan buy item that can help you. \n\nCollect the target amount of money by the end of the level , " +
                         "if you dont meet\nyour end goal ,it is game over, Your money carries with you from one level to\nthe next.",
                 Constants.WINDOW_WIDTH / 4 - 65, Constants.INSTRUCTION_WINDOW_Y + Constants.INSTRUCTION_MARGIN_FROM_UP + 50);
     }

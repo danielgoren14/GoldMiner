@@ -56,7 +56,7 @@ public  class Loot extends Rectangle {
     public static void overLapping( ){
         for (Loot loots:GamePanel.getLootList()){
             for (Loot loot2:GamePanel.getLootList()) {
-                while (!loots.equals(loot2) && (loot2.intersects(loots)) ) {
+                while (!loots.equals(loot2) && (loot2.intersects(loots))) {
                     loot2.x = Utils.randomX();
                     loot2.y = Utils.randomY();
                 }

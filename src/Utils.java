@@ -30,11 +30,11 @@ public class Utils {
     }
     public static int randomMiniGold(){
         Random random = new Random();
-        return random.nextInt(10,21);
+        return random.nextInt(10,31);
     }
     public static int randomMidGold(){
         Random random = new Random();
-        return random.nextInt(50,101);
+        return random.nextInt(30,61);
     }
     public static int randomBigGold(){
         Random random = new Random();
@@ -47,6 +47,10 @@ public class Utils {
     public static int randomBigRock(){
         Random random = new Random();
         return random.nextInt(25,41);
+    }
+    public static int randomDiamond(){
+        Random random = new Random();
+        return random.nextInt(700,1001);
     }
     public static int randomX(){
         Random random = new Random();
