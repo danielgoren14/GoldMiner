@@ -38,7 +38,9 @@ public  class Loot extends Rectangle {
     }
     public static Loot crateMiniRock(){
         return new Loot(Constants.MINI_ROCK_WEIGHT, Constants.MINI_ROCK_SIZE, Constants.MINI_ROCK_SIZE, Utils.randomX(), Utils.randomY(), Utils.randomMiniRock() ,Constants.MINI_ROCK_ICON);
-
+    }
+    public static Loot createDiamond () {
+        return new Loot(Constants.DIAMOND_WEIGHT, Constants.DIAMOND_SIZE, Constants.DIAMOND_SIZE, Utils.randomX(), Utils.randomY(), Utils.randomDiamond(), Constants.DIAMOND_ICON);
     }
 
     @Override

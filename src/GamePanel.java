@@ -149,9 +149,8 @@ public class GamePanel extends JPanel implements KeyListener {
 
     private void paintAllLoot(Graphics g) {
         try {
-            for (Loot loot : lootList
-            ) {
-                paintItem(g, loot);
+            for (Loot loot : lootList) {
+                    paintItem(g, loot);
             }
         } catch (NullPointerException e) {
         } catch (ConcurrentModificationException e) {
@@ -176,8 +175,9 @@ public class GamePanel extends JPanel implements KeyListener {
     public void keyPressed(KeyEvent e) {
         switch (e.getKeyCode()) {
             case 40 -> {
-               hook.reeling=true;
-            }default -> System.out.println(e.getKeyCode());
+                hook.setReeling(true);
+            }
+            default -> System.out.println(e.getKeyCode());
         }
     }
 

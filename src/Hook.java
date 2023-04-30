@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.util.ConcurrentModificationException;
 
 public class Hook extends Rectangle {
     private final ImageIcon icon = Utils.upscaleImage("src/ObjectPhotos/hook.png", Constants.HOOK_SIZE, Constants.HOOK_SIZE);
@@ -43,7 +44,6 @@ public class Hook extends Rectangle {
     }
 
     public void sendHook() {
-
         try {
             while (this.reeling) {
                 hitLoot();

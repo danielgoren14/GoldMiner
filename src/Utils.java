@@ -56,5 +56,4 @@ public class Utils {
         Random random = new Random();
         return random.nextInt(160,Constants.WINDOW_HEIGHT-150);
     }
-
 }

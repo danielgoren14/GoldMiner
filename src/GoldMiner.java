@@ -27,13 +27,13 @@ public class  GoldMiner {
         return tntCount;
     }
 
-    public double getStrength() {
-        double temp =Math.round(strength*100);
-        return temp /100;
+    public  static double getStrength() {
+        double temp = Math.round(strength*100);
+        return temp / 100;
     }
 
-    public double getLuck() {
-        double temp =Math.round(luck*100);
+    public static double getLuck() {
+        double temp = Math.round(luck*100);
         return temp /100;
     }
 

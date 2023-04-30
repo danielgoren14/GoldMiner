@@ -6,8 +6,7 @@ public class MainMenu extends JPanel implements KeyListener {
     private JButton startGameButton;
     private JButton instructionsButton;
     private JButton closeInstructionButton;
-    private JButton shop;
-   private boolean isClicked = false;
+    private boolean isClicked = false;
 
     public MainMenu() {
         this.setDoubleBuffered(true);

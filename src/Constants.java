@@ -17,6 +17,8 @@ public class Constants {
     public static final int INSTRUCTION_MARGIN_FROM_UP = 50;
     public static final int MINI_GOLD_WEIGHT = 1;
     public static final int MINI_GOLD_SIZE = 15;
+    public static final int DIAMOND_SIZE = 15;
+    public static final int DIAMOND_WEIGHT = 1;
     public static final ImageIcon GOLD_ICON = Utils.upscaleImage("src/ObjectPhotos/nugget.png"
             , MINI_GOLD_SIZE,
             MINI_GOLD_SIZE);
@@ -40,6 +42,10 @@ public class Constants {
     public static final ImageIcon MINI_ROCK_ICON = Utils.upscaleImage("src/ObjectPhotos/rock_big.png",
             MINI_ROCK_SIZE,
             MINI_ROCK_SIZE);
+
+    public static final ImageIcon DIAMOND_ICON = Utils.upscaleImage("src/ObjectPhotos/Diamond.png",
+            DIAMOND_SIZE,
+            DIAMOND_SIZE);
     public static final int HOOK_SIZE = 20;
     public static final int SHOP_PRODUCT_BUTTON_Y = 550;
     public static final int SHOP_TABLE_X = 100;
