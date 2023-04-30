@@ -29,7 +29,7 @@ public class Shop extends JPanel implements KeyListener {
 
     public Shop(GoldMiner player) {
         this.player = player;
-        MusicEffects musicEffects = new MusicEffects();
+       // MusicEffects musicEffects = new MusicEffects();
         this.tntInfo = false;
         this.strengthInfo = false;
         this.luckInfo = false;
@@ -53,7 +53,7 @@ public class Shop extends JPanel implements KeyListener {
                 player.addCurrentMoney(-tntPrice);
                 setTntPrice();
                 this.buyTntButton.setText("TNT " + tntPrice + "$");
-                musicEffects.playMoneySound();
+                MusicEffects.playMoneySound();
             }
         });
         this.buyTntButton.addMouseListener(new MouseListener() {
@@ -97,7 +97,7 @@ public class Shop extends JPanel implements KeyListener {
                 player.addCurrentMoney(-luckPrice);
                 setLuckPrice();
                 this.buyLuckButton.setText("LUCK " + luckPrice + "$");
-                musicEffects.playMoneySound();
+                MusicEffects.playMoneySound();
             }
         });
         this.buyLuckButton.addMouseListener(new MouseListener() {
@@ -142,7 +142,7 @@ public class Shop extends JPanel implements KeyListener {
                 setStrengthPrice();
                 this.buyStrengthButton.setText("STRENGTH " + strengthPrice + "$");
 
-                musicEffects.playMoneySound();
+                MusicEffects.playMoneySound();
             }
         });
         this.buyStrengthButton.addMouseListener(new MouseListener() {
@@ -182,7 +182,9 @@ public class Shop extends JPanel implements KeyListener {
         this.nextLevelButton.setContentAreaFilled(true);
         this.add(nextLevelButton);
         this.nextLevelButton.addActionListener((event) -> {
-            //TODO
+            Window.gamePanel.newLevel(Window.gamePanel.getCurrentLevel());
+            Window.changePanel(Window.gamePanel,this);
+
         });
 
     }

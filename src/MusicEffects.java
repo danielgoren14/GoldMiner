@@ -5,9 +5,9 @@ import java.io.File;
 import java.io.IOException;
 
 public class MusicEffects {
-    Clip clip;
-    AudioInputStream sound;
-    public void setFile(String soundFileName) {
+    static Clip clip;
+    static AudioInputStream sound;
+    public static void setFile(String soundFileName) {
         try {
             File file = new File(soundFileName);
             sound = AudioSystem.getAudioInputStream(file);
@@ -17,20 +17,30 @@ public class MusicEffects {
             e.printStackTrace();
         }
     }
-    public void play() {
+    public static void play() {
         clip.start();
     }
-    public void stop() throws IOException {
+    public static void stop() throws IOException {
         sound.close();
         clip.close();
         clip.stop();
     }
-    public void playTransition(){
+    public static void playTransition(){
         setFile("src/SoundEffects/transitionSoundEffect.wav");
         play();
     }
-    public  void playMoneySound(){
+    public static void playMoneySound(){
         setFile("src/SoundEffects/CashRegisterSoundEffect.wav");
         play();
     }
+
+    public static void playTimeSound(){
+        setFile("src/SoundEffects/Clock Ticking Sound Effect.wav");
+        play();
+    }
+    public static void playDraggingRockSound(){
+        setFile("src/SoundEffects/dragging Stone - sound effect.wav");
+        play();
+    }
+
 }

@@ -1,26 +1,26 @@
-public class GoldMiner {
-    private int currentMoney;
-    private int tntCount;
-    private double strength;
-    private double luck;
+public class  GoldMiner {
+    private  static  int currentMoney;
+    private static int tntCount;
+    private static double strength;
+    private static double luck;
 
     public GoldMiner() {
-        this.currentMoney = 1000000;
-        this.tntCount = 0;
-        this.strength = 1;
-        this.luck = 1;
+        currentMoney = 0;
+        tntCount = 0;
+        strength = 1;
+        luck = 1;
     }
 
-    public void addCurrentMoney(int amount) {
-        this.currentMoney += amount;
+    public static void addCurrentMoney(int amount) {
+        currentMoney += amount;
     }
 
-    public int getCurrentMoney() {
+    public  int getCurrentMoney() {
         return currentMoney;
     }
 
     public void addTntCount() {
-        this.tntCount++;
+        tntCount++;
     }
 
     public int getTntCount() {
@@ -37,12 +37,14 @@ public class GoldMiner {
         return temp /100;
     }
 
+
+
     public void addStrength() {
-        this.strength += 0.05;
+        strength += 0.15;
     }
 
     public void addLuck() {
-        this.luck += 0.05;
+        luck += 0.10;
     }
     public boolean canBuy(int cost){
         return cost<currentMoney;

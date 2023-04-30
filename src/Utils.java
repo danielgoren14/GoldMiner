@@ -50,11 +50,11 @@ public class Utils {
     }
     public static int randomX(){
         Random random = new Random();
-       return random.nextInt(0,Constants.WINDOW_WIDTH);
+       return random.nextInt(0,Constants.WINDOW_WIDTH-100);
     }
     public static int randomY(){
         Random random = new Random();
-       return random.nextInt(150,Constants.WINDOW_HEIGHT);
+        return random.nextInt(160,Constants.WINDOW_HEIGHT-150);
     }
 
 }

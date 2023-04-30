@@ -3,29 +3,34 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 
 public class GamePanel extends JPanel implements KeyListener {
-    public static int currentLevel;
+    private static int currentLevel;
     private static ArrayList<Loot> lootList = new ArrayList<>();
     private GoldMiner player;
     private Hook hook;
-    private int timeCountDown;
-    private boolean gameInProgress;
+    private static int timeCountDown;
     private int moneyAmountToPass;
-    private boolean test = false;
+
 
 
     public GamePanel() {
-        hook = new Hook();
+        this.player = new GoldMiner();
+        this.hook = new Hook();
         this.addKeyListener(this);
         this.setBounds(0, 0, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
         this.setDoubleBuffered(true);
         this.setLayout(null);
         this.setVisible(false);
-//        if (gameInProgress == false){
-//            Window.changePanel(Window.shopPanel,this);
-//        }
-        crateLoot();
+        this.moneyAmountToPass=750;
+        currentLevel = 1;
+        newLevel(currentLevel);
+
+    }
+
+    public static void setTimeCountDown(int timeCountDown) {
+        GamePanel.timeCountDown = timeCountDown;
     }
 
     @Override
@@ -35,29 +40,86 @@ public class GamePanel extends JPanel implements KeyListener {
                 Constants.WINDOW_WIDTH, 150);
         top.paintIcon(this, g, 0, 0);
 
-        ImageIcon bottom = Utils.upscaleImage("src/ObjectPhotos/bg_level_A.png",
+        ImageIcon bottom = Utils.upscaleImage("src/ObjectPhotos/bg.jpg",
                 Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT - 150);
         bottom.paintIcon(this, g, 0, 150);
 
-        ImageIcon reel = Utils.upscaleImage("src/ObjectPhotos/reel.png", 30, 50);
-        reel.paintIcon(this, g,this.hook.x-5 , this.hook.y-45);
-
-        hook.paintHook(this, g);
-
+        ImageIcon reel = Utils.upscaleImage("src/ObjectPhotos/reel.png", 75, 50);
+        reel.paintIcon(this, g, this.hook.x - 35, this.hook.y - 45);
+        g.setFont(new Font("Ariel", Font.BOLD, 15));
+        Utils.drawString(g,  "time : " + timeCountDown+"\ngold : " + player.getCurrentMoney() +
+                "\ntarget goal: "+moneyAmountToPass+ "\nTNT : " + player.getTntCount() +"\nlevel : " +currentLevel, 10, 10);
         paintAllLoot(g);
+        hook.paintHook(this, g);
+        if (gameOver() && timeCountDown == 0) {
+            g.setFont(new Font("Ariel", Font.BOLD, 80));
+            Utils.drawString(g , "GAME OVER", Constants.WINDOW_WIDTH/3 , Constants.WINDOW_HEIGHT/3);
+            this.hook.freezeGame();
+            //timeCountDown=Constants.GAME_TIME;
+        }
         repaint();
     }
 
-    public void crateLoot() {
-        for (int i = 0; i < 15; i++) {
-            lootList.add(Loot.crateBigGold());
-            lootList.add(Loot.crateMidGold());
+    public static int getCurrentLevel() {
+        return currentLevel;
+    }
+    public void nextLevelAdjustment(){
+        this.moneyAmountToPass *= 1.5;
+    }
+    public void newLevel(int level){
+        timeCountDown=Constants.GAME_TIME;
+        lootList.clear();
+        switch (level) {
+            case 1 -> {
+                createLoot(5, 4, 3,4,2,0);
+            }
+            case 2 -> {
+                createLoot(4, 3, 3 , 3, 4, 0);
+                nextLevelAdjustment();            }
+            case 3 -> {
+                createLoot(6, 3, 2,4,3,0);
+                nextLevelAdjustment();
+            }
+            case 4 -> {
+                createLoot(7, 3, 2,4,3,0);
+                nextLevelAdjustment();
+            }
+            case 5 -> {
+                createLoot(8, 3, 2,4,3,2);
+                nextLevelAdjustment();
+            }
+            case 6 -> {
+                createLoot(9, 3, 2,4,3,3);
+                nextLevelAdjustment();
+            }
+            case 7 -> {
+                createLoot(10, 3, 2,4,3,3);
+                nextLevelAdjustment();
+            }
+        }
+        countDown();
+    }
+
+    public  void createLoot(int miniGold, int midGold, int bigGold, int miniRock , int bigRock , int diamond) {
+        for (int i = 0; i < miniGold; i++) {
             lootList.add(Loot.crateMiniGold());
+        }
+        for (int i = 0; i < midGold; i++) {
+            lootList.add(Loot.crateMidGold());
+        }
+        for (int i = 0; i < bigGold; i++) {
+            lootList.add(Loot.crateBigGold());
+        }
+        for (int i = 0; i < miniRock; i++) {
             lootList.add(Loot.crateMiniRock());
+        }
+        for (int i = 0; i < bigRock; i++) {
             lootList.add(Loot.crateBigRock());
         }
-
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < diamond; i++) {
+            lootList.add(Loot.createDiamond());
+        }
+        for (int i = 0; i < 10; i++) {
             Loot.overLapping();
         }
     }
@@ -65,27 +127,24 @@ public class GamePanel extends JPanel implements KeyListener {
     public boolean countDown() {
         boolean levelEnded = false;
         new Thread(() -> {
-            switch (currentLevel) {
-                case 0 -> {
-                    while (this.gameInProgress) {
-                        try {
-                            Thread.sleep(1000);
-                            this.timeCountDown--;
-                        } catch (InterruptedException e) {
-                            throw new RuntimeException(e);
-                        }
-                    }
+            while (timeCountDown > 0) {
+                Utils.sleep(1000);
+                timeCountDown--;
+                if (!this.gameOver()){
+                    this.hook.freezeGame();
+                    Window.changePanel(Window.shopPanel,this);
+                    currentLevel++;
                 }
             }
-        });
+        }).start();
+        if (!this.gameOver()){
+            levelEnded = true;
+        }
         return levelEnded;
     }
 
     public boolean gameOver() {
-        //check the !this.gameInProgress == false condition
-        if (!this.gameInProgress == false && this.moneyAmountToPass > player.getCurrentMoney()) {
-            return false;
-        } else return true;
+        return this.moneyAmountToPass >= this.player.getCurrentMoney() || timeCountDown != 0;
     }
 
     private void paintAllLoot(Graphics g) {
@@ -95,12 +154,10 @@ public class GamePanel extends JPanel implements KeyListener {
                 paintItem(g, loot);
             }
         } catch (NullPointerException e) {
+        } catch (ConcurrentModificationException e) {
         }
     }
 
-    /*public void paintHook(Graphics g) {
-        hook.getIcon().paintIcon(this, g, hook.x, hook.y);
-    }*/
 
     public void paintItem(Graphics g, Loot item) {
         item.getIcon().paintIcon(this, g, item.x, item.y);

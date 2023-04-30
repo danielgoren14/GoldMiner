@@ -10,13 +10,6 @@ public class Constants {
     public static final int BUTTON_HEIGHT = 50;
     public static final int START_BUTTON_WIDTH = 250;
     public static final int START_BUTTON_HEIGHT = 225;
-    public static final int BUTTON_SPACE_HEIGHT = 50;
-    public static final int MENU_LABEL_WIDTH = 300;
-    public static final int MENU_LABEL_HEIGHT = 250;
-    public static final int X_LOCATION_GOLD_MINER_CHARACTER = 350;
-    public static final int Y_LOCATION_GOLD_MINER_CHARACTER = 50;
-    public static final int HEIGHT_GOLD_MINER_CHARACTER = 50;
-    public static final int WIDTH_GOLD_MINER_CHARACTER = 50;
     public static final int INSTRUCTION_WINDOW_WIDTH = 800;
     public static final int INSTRUCTIONS_WINDOW_HEIGHT = 500;
     public static final int INSTRUCTION_WINDOW_X = 200;
@@ -59,7 +52,6 @@ public class Constants {
     public static final int TNT_X = SHOPKEEPER_X - SPACE_BETWEEN_PRODUCTS;
     public static final int LUCK_X = TNT_X - SPACE_BETWEEN_PRODUCTS;
     public static final int STRENGTH_X = LUCK_X - SPACE_BETWEEN_PRODUCTS;
-
     public static final ImageIcon SHOP_STRENGTH_ICON = Utils.upscaleImage("src/ObjectPhotos/strength_drink.png",
             Constants.SHOP_ITEM_WIDTH,
             Constants.SHOP_ITEM_HEIGHT);
@@ -99,7 +91,7 @@ public class Constants {
             SHOP_NEXT_LEVEL_BUTTON_WIDTH,
             SHOP_NEXT_LEVEL_BUTTON_HEIGHT);
     public static final int SHOP_STATS_ICON_SIZE = 30;
-    public static final ImageIcon SHOP_STATS_GOLD_ICON= Utils.upscaleImage("src/ObjectPhotos/gold_big.png",
+    public static final ImageIcon SHOP_STATS_GOLD_ICON= Utils.upscaleImage("src/ObjectPhotos/nugget.png",
             SHOP_STATS_ICON_SIZE,
             SHOP_STATS_ICON_SIZE);
     public static final ImageIcon SHOP_STATS_STRENGTH_ICON= Utils.upscaleImage("src/ObjectPhotos/strength_drink.png",
@@ -118,4 +110,5 @@ public class Constants {
     public static final int SHOP_STATS_TNT_ICON_Y= 145;
     public static final int SHOP_PRICE_MULTIPLIER= 2;
     public static final int SHOP_TNT_PRICE_INCREASE= 100;
+    public static final int GAME_TIME=60;
 }

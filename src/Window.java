@@ -1,10 +1,10 @@
 import javax.swing.*;
-import java.awt.event.KeyListener;
+        import java.awt.event.KeyListener;
 
 public class Window extends JFrame {
-    public static JPanel menuPanel;
-    public static JPanel gamePanel;
-    public static JPanel shopPanel;
+    public static MainMenu menuPanel;
+    public static GamePanel gamePanel;
+    public static Shop shopPanel;
     public static KeyListener keyListener;
 
     public static void main(String[] args) {
@@ -30,7 +30,7 @@ public class Window extends JFrame {
         this.getContentPane().add(shopPanel);
         this.setLocationRelativeTo(null);
         this.setVisible(true);
-       // refreshKeyListener();
+        // refreshKeyListener();
 
 
     }
@@ -41,30 +41,16 @@ public class Window extends JFrame {
             newPanel.requestFocusInWindow();
             oldPanel.setVisible(false);
         } catch (NullPointerException e) {
-            e.printStackTrace();
         }
         try {
             changeKeys(newPanel.getKeyListeners()[0]);
         } catch (ArrayIndexOutOfBoundsException e) {
             e.printStackTrace();
         }
-
     }
 
     public static void changeKeys(KeyListener newKeyListener) {
         keyListener = newKeyListener;
     }
-
-    public void refreshKeyListener() {
-        new Thread(() -> {
-            while (true) {
-                this.removeKeyListener(keyListener);
-                this.addKeyListener(keyListener);
-
-            }
-        }).start();
-
-    }
-
 
 }

@@ -14,7 +14,6 @@ public class MainMenu extends JPanel implements KeyListener {
         this.setLayout(null);
         this.addKeyListener(this);
         this.setBounds(0, 0, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
-        MusicEffects musicEffects = new MusicEffects();
 
         this.startGameButton = new JButton();
         this.startGameButton.setBounds(525, 150, Constants.START_BUTTON_WIDTH, Constants.START_BUTTON_HEIGHT);
@@ -24,7 +23,8 @@ public class MainMenu extends JPanel implements KeyListener {
         this.add(startGameButton);
         this.startGameButton.addActionListener((event) -> {
             Window.changePanel(Window.gamePanel, this);
-            musicEffects.playTransition();
+            GamePanel.setTimeCountDown(Constants.GAME_TIME);
+            MusicEffects.playTransition();
         });
 
         this.instructionsButton = new JButton();
@@ -35,7 +35,7 @@ public class MainMenu extends JPanel implements KeyListener {
         this.instructionsButton.setContentAreaFilled(false);
         this.instructionsButton.setBorderPainted(false);
         this.instructionsButton.addActionListener((event) -> {
-            musicEffects.playTransition();
+            MusicEffects.playTransition();
             isClicked = true;
             closeInstructionButton.setVisible(true);
             closeInstructionButton.setEnabled(true);
@@ -52,26 +52,13 @@ public class MainMenu extends JPanel implements KeyListener {
                 Constants.BUTTON_WIDTH, Constants.BUTTON_HEIGHT);
         this.add(closeInstructionButton);
         closeInstructionButton.addActionListener(e -> {
-            musicEffects.playTransition();
-           isClicked = false;
+            MusicEffects.playTransition();
+            isClicked = false;
             closeInstructionButton.setVisible(false);
             closeInstructionButton.setEnabled(false);
             this.instructionsButton.setEnabled(true);
             this.startGameButton.setEnabled(true);
         });
-
-        this.shop = new JButton();
-        this.add(shop);
-        this.shop.setVisible(true);
-        this.shop.setBounds(250, 250, 225, 45);
-     /*   this.shop.setOpaque(false);
-        this.shop.setContentAreaFilled(false);
-        this.shop.setBorderPainted(false);*/
-        this.shop.addActionListener((event) -> {
-            Window.changePanel(Window.shopPanel, this);
-            musicEffects.playTransition();
-        });
-
         this.setVisible(false);
     }
 
@@ -81,7 +68,6 @@ public class MainMenu extends JPanel implements KeyListener {
         instructionsButton.setEnabled(false);
         ImageIcon panel = Utils.upscaleImage("src/ObjectPhotos/panel.png", Constants.INSTRUCTION_WINDOW_WIDTH,
                 Constants.INSTRUCTIONS_WINDOW_HEIGHT);
-      //  ImageIcon text = Utils.upscaleImage("src/ObjectPhotos/img_4.png", 500, 300);
         panel.paintIcon(this, graphics, Constants.INSTRUCTION_WINDOW_X, Constants.INSTRUCTION_WINDOW_Y);
         graphics.setFont(new Font("Arial", Font.BOLD, 35));
         graphics.drawString("Rules and Instructions:", Constants.WINDOW_WIDTH / 3,
@@ -94,15 +80,7 @@ public class MainMenu extends JPanel implements KeyListener {
                         "between levels you can buy item \nthat can help you. \n\nCollect the target amount of money by the end of the level , " +
                         "if you dont meet\nyour end goal ,it is game over, Your money carries with you from one level to\nthe next.",
                 Constants.WINDOW_WIDTH / 4 - 65, Constants.INSTRUCTION_WINDOW_Y + Constants.INSTRUCTION_MARGIN_FROM_UP + 50);
-
-        // text.paintIcon(this, graphics, Constants.INSTRUCTION_WINDOW_X + Constants.INSTRUCTION_MARGIN_FROM_LEFT, Constants.INSTRUCTION_WINDOW_Y + Constants.INSTRUCTION_MARGIN_FROM_UP);
     }
-
-   /* void drawString(Graphics g, String text, int x, int y) {
-        for (String line : text.split("\n"))
-            g.drawString(line, x, y += g.getFontMetrics().getHeight());
-    }*/
-
 
     @Override
     public void paintComponent(Graphics g) {
@@ -110,9 +88,8 @@ public class MainMenu extends JPanel implements KeyListener {
         ImageIcon image = Utils.upscaleImage("src/ObjectPhotos/MainMenuBackground.png",
                 Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
         image.paintIcon(this, g, 0, 0);
-
-      if (isClicked) {
-         instructions(g);
+        if (isClicked) {
+            instructions(g);
         }
         repaint();
     }

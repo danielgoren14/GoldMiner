@@ -1,11 +1,10 @@
 import javax.swing.*;
 import java.awt.*;
-import java.util.Objects;
 
 public  class Loot extends Rectangle {
     ImageIcon icon;
-    private int weight;
-    private int moneyValue;
+    private final int weight;
+    private final int moneyValue;
 
     public Loot(int weight, int width, int height, int xLocation, int yLocation, int moneyValue , ImageIcon icon)  {
         super(xLocation,yLocation,width,height);
@@ -44,14 +43,12 @@ public  class Loot extends Rectangle {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("Loot{");
-        sb.append("icon=").append(icon);
-        sb.append(", weight=").append(weight);
-        sb.append(", width=").append(width);
-        sb.append(", height=").append(height);
-        sb.append(", moneyValue=").append(moneyValue);
-        sb.append('}');
-        return sb.toString();
+        return "Loot{" + "icon=" + icon +
+                ", weight=" + weight +
+                ", width=" + width +
+                ", height=" + height +
+                ", moneyValue=" + moneyValue +
+                '}';
     }
 
     public static void overLapping( ){
