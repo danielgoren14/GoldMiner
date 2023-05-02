@@ -2,6 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
+import static java.awt.event.KeyEvent.VK_ENTER;
+
 public class Shop extends JPanel implements KeyListener {
     private int tntPrice = 200;
     private int luckPrice = 3;
@@ -14,38 +16,70 @@ public class Shop extends JPanel implements KeyListener {
     private JButton buyStrengthButton;
     private JButton buyLuckButton;
     private JButton nextLevelButton;
-
-    public void setTntPrice() {
-        this.tntPrice += Constants.SHOP_TNT_PRICE_INCREASE;
-    }
-
-    public void setLuckPrice() {
-        this.luckPrice = this.luckPrice * Constants.SHOP_PRICE_MULTIPLIER;
-    }
-
-    public void setStrengthPrice() {
-        this.strengthPrice = this.strengthPrice * Constants.SHOP_PRICE_MULTIPLIER;
-    }
+    //------------- FINALS-------------------
+    private int START_X = 0;
+    private int START_Y = 0;
+    private final int STATS_ICON_X = 10;
+    private final int STATS_GOLD_ICON_Y = 25;
+    private final int STATS_LUCK_ICON_Y = 65;
+    private final int STATS_STRENGTH_ICON_Y = 105;
+    private final int STATS_TNT_ICON_Y = 145;
+    private final int PRICE_MULTIPLIER = 2;
+    private final int TNT_PRICE_INCREASE = 100;
+    private final int INFO_SCREEN_X = 400;
+    private final int INFO_SCREEN_TEXT_X = INFO_SCREEN_X + 25;
+    private final int INFO_SCREEN_Y = 20;
+    private final int PRODUCT_BUTTON_Y = 550;
+    private final int TABLE_X = 100;
+    private final int TABLE_HEIGHT = 500;
+    private final int TABLE_WIDTH = Window.WINDOW_WIDTH - 200;
+    private final int ITEM_WIDTH = 100;
+    private final int ITEM_HEIGHT = 150;
+    private final int SPACE_BETWEEN_PRODUCTS = 200;
+    private final int SHOPKEEPER_X = 800;
+    private final int TNT_X = SHOPKEEPER_X - SPACE_BETWEEN_PRODUCTS;
+    private final int LUCK_X = TNT_X - SPACE_BETWEEN_PRODUCTS;
+    private final int STRENGTH_X = LUCK_X - SPACE_BETWEEN_PRODUCTS;
+    private final int CURRENT_STATS_X = 50;
+    private final int CURRENT_STATS_Y = 10;
+    private final int NEXT_LEVEL_BUTTON_WIDTH = 200;
+    private final int NEXT_LEVEL_BUTTON_HEIGHT = 100;
+    private final int NEXT_LEVEL_BUTTON_X = SHOPKEEPER_X + 45;
+    private final int NEXT_LEVEL_BUTTON_Y = Window.WINDOW_HEIGHT - NEXT_LEVEL_BUTTON_HEIGHT - 50;
+    private final int STATS_ICON_SIZE = 30;
+    private final int BUTTON_WIDTH = 150;
+    private final int BUTTON_HEIGHT = 50;
+    private final ImageIcon NEXT_LEVEL_BACKGROUND = Utils.upscaleImage("src/ObjectPhotos/Panel.png", NEXT_LEVEL_BUTTON_WIDTH, NEXT_LEVEL_BUTTON_HEIGHT);
+    private final ImageIcon STATS_GOLD_ICON = Utils.upscaleImage("src/ObjectPhotos/Gold.png", STATS_ICON_SIZE, STATS_ICON_SIZE);
+    private final ImageIcon STATS_STRENGTH_ICON = Utils.upscaleImage("src/ObjectPhotos/Strength_Drink.png", STATS_ICON_SIZE, STATS_ICON_SIZE);
+    private final ImageIcon STATS_TNT_ICON = Utils.upscaleImage("src/ObjectPhotos/TNT.png", STATS_ICON_SIZE, STATS_ICON_SIZE);
+    private final ImageIcon STATS_LUCK_ICON = Utils.upscaleImage("src/ObjectPhotos/Lucky_Clover.png", STATS_ICON_SIZE, STATS_ICON_SIZE);
+    private final ImageIcon STRENGTH_ICON = Utils.upscaleImage("src/ObjectPhotos/Strength_Drink.png", ITEM_WIDTH, ITEM_HEIGHT);
+    private final ImageIcon TNT_ICON = Utils.upscaleImage("src/ObjectPhotos/TNT.png", ITEM_WIDTH, ITEM_HEIGHT);
+    private final ImageIcon LUCK_ICON = Utils.upscaleImage("src/ObjectPhotos/Lucky_Clover.png", ITEM_WIDTH, ITEM_HEIGHT);
+    private final ImageIcon SHOPKEEPER_ICON = Utils.upscaleImage("src/ObjectPhotos/Shopkeeper.jpg", 250, 255);
+    private final ImageIcon TABLE = Utils.upscaleImage("src/ObjectPhotos/Shop_Table.png", TABLE_WIDTH, Window.WINDOW_HEIGHT - TABLE_HEIGHT);
+    private final ImageIcon BACKGROUND = Utils.upscaleImage("src/ObjectPhotos/Shop_Background.png", Window.WINDOW_WIDTH, Window.WINDOW_HEIGHT);
+    private final ImageIcon BUTTON_BACKGROUND = Utils.upscaleImage("src/ObjectPhotos/Panel.png", BUTTON_WIDTH, BUTTON_HEIGHT);
+    private final ImageIcon INFO_SCREEN = Utils.upscaleImage("src/ObjectPhotos/Panel.png", 550, 150);
 
     public Shop(GoldMiner player) {
         this.player = player;
-       // MusicEffects musicEffects = new MusicEffects();
         this.tntInfo = false;
         this.strengthInfo = false;
         this.luckInfo = false;
         this.setDoubleBuffered(true);
-        this.setBounds(0, 0, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
+        this.setBounds(START_X, START_Y, Window.WINDOW_WIDTH, Window.WINDOW_HEIGHT);
         this.setLayout(null);
         this.setVisible(false);
         this.addKeyListener(this);
-
 
         this.buyTntButton = new JButton("TNT " + tntPrice + "$");
         this.buyTntButton.setFont(new Font("Ariel", Font.BOLD, 17));
         this.buyTntButton.setHorizontalTextPosition(JButton.CENTER);
         this.buyTntButton.setVerticalTextPosition(JButton.CENTER);
-        this.buyTntButton.setBounds(Constants.TNT_X, Constants.SHOP_PRODUCT_BUTTON_Y, Constants.SHOP_BUTTON_WIDTH, Constants.SHOP_BUTTON_HEIGHT);
-        this.buyTntButton.setIcon(Constants.SHOP_BUTTON_BACKGROUND);
+        this.buyTntButton.setBounds(TNT_X, PRODUCT_BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
+        this.buyTntButton.setIcon(BUTTON_BACKGROUND);
         this.buyTntButton.setContentAreaFilled(true);
         this.add(this.buyTntButton);
         this.buyTntButton.addActionListener((event) -> {
@@ -60,12 +94,10 @@ public class Shop extends JPanel implements KeyListener {
         this.buyTntButton.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-
             }
 
             @Override
             public void mousePressed(MouseEvent e) {
-
             }
 
             @Override
@@ -83,13 +115,12 @@ public class Shop extends JPanel implements KeyListener {
             }
         });
 
-
         this.buyLuckButton = new JButton("LUCK " + luckPrice + "$");
         this.buyLuckButton.setFont(new Font("Ariel", Font.BOLD, 16));
-        this.buyLuckButton.setBounds(Constants.LUCK_X, Constants.SHOP_PRODUCT_BUTTON_Y, Constants.SHOP_BUTTON_WIDTH, Constants.SHOP_BUTTON_HEIGHT);
+        this.buyLuckButton.setBounds(LUCK_X, PRODUCT_BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
         this.buyLuckButton.setHorizontalTextPosition(JButton.CENTER);
         this.buyLuckButton.setVerticalTextPosition(JButton.CENTER);
-        this.buyLuckButton.setIcon(Constants.SHOP_BUTTON_BACKGROUND);
+        this.buyLuckButton.setIcon(BUTTON_BACKGROUND);
         this.buyLuckButton.setContentAreaFilled(true);
         this.add(this.buyLuckButton);
         this.buyLuckButton.addActionListener((event) -> {
@@ -104,12 +135,10 @@ public class Shop extends JPanel implements KeyListener {
         this.buyLuckButton.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-
             }
 
             @Override
             public void mousePressed(MouseEvent e) {
-
             }
 
             @Override
@@ -127,13 +156,12 @@ public class Shop extends JPanel implements KeyListener {
             }
         });
 
-
         this.buyStrengthButton = new JButton("STRENGTH " + strengthPrice + "$");
-        this.buyStrengthButton.setBounds(Constants.STRENGTH_X, Constants.SHOP_PRODUCT_BUTTON_Y, Constants.SHOP_BUTTON_WIDTH,
-                Constants.SHOP_BUTTON_HEIGHT);
+        this.buyStrengthButton.setBounds(STRENGTH_X, PRODUCT_BUTTON_Y, BUTTON_WIDTH,
+                BUTTON_HEIGHT);
         this.buyStrengthButton.setHorizontalTextPosition(JButton.CENTER);
         this.buyStrengthButton.setVerticalTextPosition(JButton.CENTER);
-        this.buyStrengthButton.setIcon(Constants.SHOP_BUTTON_BACKGROUND);
+        this.buyStrengthButton.setIcon(BUTTON_BACKGROUND);
         this.buyStrengthButton.setContentAreaFilled(true);
         this.add(this.buyStrengthButton);
         this.buyStrengthButton.addActionListener((event) -> {
@@ -149,12 +177,10 @@ public class Shop extends JPanel implements KeyListener {
         this.buyStrengthButton.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-
             }
 
             @Override
             public void mousePressed(MouseEvent e) {
-
             }
 
             @Override
@@ -172,40 +198,50 @@ public class Shop extends JPanel implements KeyListener {
             }
         });
 
-
         this.nextLevelButton = new JButton("START NEXT LEVEL");
         this.nextLevelButton.setFont(new Font("Ariel", Font.BOLD, 17));
-        this.nextLevelButton.setBounds(Constants.SHOP_NEXT_LEVEL_BUTTON_X, Constants.SHOP_NEXT_LEVEL_BUTTON_Y,
-                Constants.SHOP_NEXT_LEVEL_BUTTON_WIDTH, Constants.SHOP_NEXT_LEVEL_BUTTON_HEIGHT);
+        this.nextLevelButton.setBounds(NEXT_LEVEL_BUTTON_X, NEXT_LEVEL_BUTTON_Y,
+                NEXT_LEVEL_BUTTON_WIDTH, NEXT_LEVEL_BUTTON_HEIGHT);
         this.nextLevelButton.setHorizontalTextPosition(JButton.CENTER);
         this.nextLevelButton.setVerticalTextPosition(JButton.CENTER);
-        this.nextLevelButton.setIcon(Constants.SHOP_NEXT_LEVEL_BACKGROUND);
+        this.nextLevelButton.setIcon(NEXT_LEVEL_BACKGROUND);
         this.nextLevelButton.setContentAreaFilled(true);
         this.add(nextLevelButton);
         this.nextLevelButton.addActionListener((event) -> {
             Window.gamePanel.newLevel(Window.gamePanel.getCurrentLevel());
-            Window.changePanel(Window.gamePanel,this);
-
+            Window.changePanel(Window.gamePanel, this);
         });
+    }
 
+    private void setTntPrice() {
+        this.tntPrice += TNT_PRICE_INCREASE;
+    }
+
+    private void setLuckPrice() {
+        this.luckPrice = this.luckPrice * PRICE_MULTIPLIER;
+    }
+
+    private void setStrengthPrice() {
+        this.strengthPrice = this.strengthPrice * PRICE_MULTIPLIER;
     }
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        Constants.SHOP_BACKGROUND.paintIcon(this, g, 0, 0);
-        Constants.SHOP_TABLE.paintIcon(this, g, Constants.SHOP_TABLE_X, Constants.SHOP_TABLE_HEIGHT);
-        Constants.SHOPKEEPER_ICON.paintIcon(this, g, Constants.SHOPKEEPER_X, Constants.SHOPKEEPER_ICON.getIconHeight());
-        Constants.SHOP_TNT_ICON.paintIcon(this, g, Constants.TNT_X, Constants.SHOP_TABLE_HEIGHT - Constants.SHOP_ITEM_HEIGHT);
-        Constants.SHOP_LUCK_ICON.paintIcon(this, g, Constants.LUCK_X, Constants.SHOP_TABLE_HEIGHT - Constants.SHOP_ITEM_HEIGHT);
-        Constants.SHOP_STRENGTH_ICON.paintIcon(this, g, Constants.STRENGTH_X, Constants.SHOP_TABLE_HEIGHT - Constants.SHOP_ITEM_HEIGHT);
-        Constants.SHOP_STATS_GOLD_ICON.paintIcon(this, g, Constants.SHOP_STATS_ICON_X, Constants.SHOP_STATS_GOLD_ICON_Y);
-        Constants.SHOP_STATS_LUCK_ICON.paintIcon(this, g, Constants.SHOP_STATS_ICON_X, Constants.SHOP_STATS_LUCK_ICON_Y);
-        Constants.SHOP_STATS_STRENGTH_ICON.paintIcon(this, g, Constants.SHOP_STATS_ICON_X, Constants.SHOP_STATS_STRENGTH_ICON_Y);
-        Constants.SHOP_STATS_TNT_ICON.paintIcon(this, g, Constants.SHOP_STATS_ICON_X, Constants.SHOP_STATS_TNT_ICON_Y);
+        BACKGROUND.paintIcon(this, g, 0, 0);
+        TABLE.paintIcon(this, g, TABLE_X, TABLE_HEIGHT);
+        SHOPKEEPER_ICON.paintIcon(this, g, SHOPKEEPER_X, SHOPKEEPER_ICON.getIconHeight());
+        TNT_ICON.paintIcon(this, g, TNT_X, TABLE_HEIGHT - ITEM_HEIGHT);
+        LUCK_ICON.paintIcon(this, g, LUCK_X, TABLE_HEIGHT - ITEM_HEIGHT);
+        STRENGTH_ICON.paintIcon(this, g, STRENGTH_X, TABLE_HEIGHT - ITEM_HEIGHT);
+        STATS_GOLD_ICON.paintIcon(this, g, STATS_ICON_X, STATS_GOLD_ICON_Y);
+        STATS_LUCK_ICON.paintIcon(this, g, STATS_ICON_X, STATS_LUCK_ICON_Y);
+        STATS_STRENGTH_ICON.paintIcon(this, g, STATS_ICON_X, STATS_STRENGTH_ICON_Y);
+        STATS_TNT_ICON.paintIcon(this, g, STATS_ICON_X, STATS_TNT_ICON_Y);
         g.setColor(Color.black);
         g.setFont(new Font("Arial", Font.BOLD, 35));
-        Utils.drawString(g, "Gold: " + player.getCurrentMoney() + "$\nLuck: " + player.getLuck() + "\nStrength: " + player.getStrength() + "\nTNT: " +
-                player.getTntCount(), Constants.SHOP_CURRENT_STATS_X, Constants.SHOP_CURRENT_STATS_Y);
+        Utils.drawString(g, "Gold: " + player.getCurrentMoney() + "$\nLuck: " + player.getLuck() +
+                "\nStrength: " + player.getStrength() + "\nTNT: " +
+                player.getTntCount(), CURRENT_STATS_X, CURRENT_STATS_Y);
         if (luckInfo) {
             setInfoTab(g, "help you earn more loot per \nobject\nprice: " + luckPrice + " $");
         }
@@ -218,9 +254,9 @@ public class Shop extends JPanel implements KeyListener {
         repaint();
     }
 
-    public void setInfoTab(Graphics g, String text) {
-        Constants.SHOP_INFO_SCREEN.paintIcon(this, g, Constants.SHOP_INFO_SCREEN_X, Constants.SHOP_INFO_SCREEN_Y);
-        Utils.drawString(g, text, Constants.SHOP_INFO_SCREEN_TEXT_X, Constants.SHOP_INFO_SCREEN_Y);
+    private void setInfoTab(Graphics g, String text) {
+        INFO_SCREEN.paintIcon(this, g, INFO_SCREEN_X, INFO_SCREEN_Y);
+        Utils.drawString(g, text, INFO_SCREEN_TEXT_X, INFO_SCREEN_Y);
     }
 
     @Override
@@ -229,14 +265,13 @@ public class Shop extends JPanel implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
+        switch (e.getKeyChar()) {
+            case VK_ENTER -> nextLevelButton.doClick();
+        }
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-        switch (e.getKeyChar()) {
-            case 'z' -> System.out.println("buyTNT");
-            case 'x' -> System.out.println("buy luck");
-            case 'c' -> System.out.println("buy");
-        }
+
     }
 }

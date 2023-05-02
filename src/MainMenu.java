@@ -22,7 +22,7 @@ public class MainMenu extends JPanel implements KeyListener {
         this.add(startGameButton);
         this.startGameButton.addActionListener((event) -> {
             Window.changePanel(Window.gamePanel, this);
-            GamePanel.setTimeCountDown(Constants.GAME_TIME);
+            GamePanel.setTimeCountDown(GamePanel.GAME_TIME);
             MusicEffects.playTransition();
         });
 
@@ -47,8 +47,8 @@ public class MainMenu extends JPanel implements KeyListener {
         closeInstructionButton.setEnabled(false);
         closeInstructionButton.setContentAreaFilled(false);
         closeInstructionButton.setBorderPainted(false);
-        closeInstructionButton.setBounds(Constants.BUTTON_EXIT_X, Constants.BUTTON_EXIT_Y,
-                Constants.BUTTON_WIDTH, Constants.BUTTON_HEIGHT);
+        closeInstructionButton.setBounds(BUTTON_EXIT_X, BUTTON_EXIT_Y,
+                BUTTON_WIDTH, BUTTON_HEIGHT);
         this.add(closeInstructionButton);
         closeInstructionButton.addActionListener(e -> {
             MusicEffects.playTransition();
@@ -82,8 +82,8 @@ public class MainMenu extends JPanel implements KeyListener {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponents(g);
-        ImageIcon image = Utils.upscaleImage("src/ObjectPhotos/MainMenuBackground.png",
-                Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
+        ImageIcon image = Utils.upscaleImage("src/ObjectPhotos/Main_Menu_Background.png",
+                Window.WINDOW_WIDTH, Window.WINDOW_HEIGHT);
         image.paintIcon(this, g, 0, 0);
         if (isClicked) {
             instructions(g);
@@ -98,17 +98,16 @@ public class MainMenu extends JPanel implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         switch (e.getKeyCode()) {
-            case 10 -> {
+            case VK_ENTER -> {
                 startGameButton.doClick();
                 closeInstructionButton.doClick();
             }
-            case 27 -> {
+            case VK_ESCAPE -> {
                 closeInstructionButton.doClick();
             }
-            case 73 -> {
+            case VK_I -> {
                 instructionsButton.doClick();
             }
-            default -> System.out.println(e.getKeyCode());
         }
     }
 

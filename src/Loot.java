@@ -27,7 +27,7 @@ public  class Loot extends Rectangle {
        return new Loot(Constants.MINI_GOLD_WEIGHT, Constants.MINI_GOLD_SIZE, Constants.MINI_GOLD_SIZE, Utils.randomX(), Utils.randomY(), Utils.randomMiniGold() ,Constants.GOLD_ICON);
     }
     public static Loot crateMidGold(){
-        return new Loot(Constants.MID_GOLD_WEIGHT, Constants.MID_GOLD_SIZE, Constants.MID_GOLD_SIZE, Utils.randomX(), Utils.randomY(), Utils.randomMidGold() ,Constants.MID_GOLD_ICON);
+        return new Loot(MID_GOLD_WEIGHT, MID_GOLD_SIZE, MID_GOLD_SIZE, Utils.randomX(), Utils.randomY(), Utils.randomPriceMidGold() ,MID_GOLD_ICON);
     }
     public static Loot crateBigGold(){
         return new Loot(Constants.BIG_GOLD_WEIGHT, Constants.BIG_GOLD_SIZE, Constants.BIG_GOLD_SIZE, Utils.randomX(), Utils.randomY(), Utils.randomBigGold() ,Constants.BIG_GOLD_ICON);

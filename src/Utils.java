@@ -21,43 +21,43 @@ public class Utils {
             g.drawString(line, x, y += g.getFontMetrics().getHeight());
     }
 
-    public static void sleep(int milSc){
+    public static void sleep(int milSc) {
         try {
             Thread.sleep(milSc);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
     }
-    public static int randomMiniGold(){
-        Random random = new Random();
-        return random.nextInt(10,31);
+
+    public static int randomPriceMiniGold() {
+        return new Random().nextInt(MIN_MINI_GOLD, MAX_MINI_GOLD);
     }
-    public static int randomMidGold(){
-        Random random = new Random();
-        return random.nextInt(30,61);
+
+    public static int randomPriceMidGold() {
+        return new Random().nextInt(MIN_MID_GOLD, MAX_MID_GOLD);
     }
-    public static int randomBigGold(){
-        Random random = new Random();
-        return random.nextInt(250,501);
+
+    public static int randomPriceBigGold() {
+        return new Random().nextInt(MIN_BIG_GOLD, MAX_BIG_GOLD);
     }
-    public static int randomMiniRock(){
-        Random random = new Random();
-        return random.nextInt(5,16);
+
+    public static int randomPriceMiniRock() {
+        return new Random().nextInt(MIN_MINI_ROCK, MAX_MINI_ROCK);
     }
-    public static int randomBigRock(){
-        Random random = new Random();
-        return random.nextInt(25,41);
+
+    public static int randomPriceBigRock() {
+        return new Random().nextInt(MIN_BIG_ROCK, MAX_BIG_ROCK);
     }
-    public static int randomDiamond(){
-        Random random = new Random();
-        return random.nextInt(700,1001);
+
+    public static int randomPriceDiamond() {
+        return new Random().nextInt(MIN_DIAMOND, MAX_DIAMOND);
     }
-    public static int randomX(){
-        Random random = new Random();
-       return random.nextInt(0,Constants.WINDOW_WIDTH-100);
+
+    public static int randomX() {
+        return new Random().nextInt(MIN_X, MAX_X);
     }
-    public static int randomY(){
-        Random random = new Random();
-        return random.nextInt(160,Constants.WINDOW_HEIGHT-150);
+
+    public static int randomY() {
+        return new Random().nextInt(MIN_Y, MAX_Y);
     }
 }

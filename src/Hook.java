@@ -3,55 +3,69 @@ import java.awt.*;
 import java.util.ConcurrentModificationException;
 
 public class Hook extends Rectangle {
-    private final ImageIcon icon = Utils.upscaleImage("src/ObjectPhotos/hook.png", Constants.HOOK_SIZE, Constants.HOOK_SIZE);
-    private boolean rightDirection;
-    private boolean moving;
-    private boolean reeling;
+    private boolean swingingRightDirection;
+    private boolean isSwinging;
+    private boolean isReeling;
     private boolean hitSomething;
-    private double xHeadLine;
-    private double yHeadLine;
-   //private GoldMiner owner;
+    private double xEnd;
+    private double yEnd;
+
+
     private Loot lootCurrentlyPulling;
 
+    //------------- FINALS-------------------
+
+    private static final int HOOK_SIZE = 20;
+    private static final int HOOK_X = Window.WINDOW_WIDTH / 2;
+    private static final int HOOK_Y = 110;
+    private static final int HOOK_Y_MARGIN = 20;
+    private static final int HOOK_SWING_MARGIN = 100;
+    private final ImageIcon icon = Utils.upscaleImage("src/ObjectPhotos/Hook.png", HOOK_SIZE, HOOK_SIZE);
+    private final int CATCHER_WIDTH = 180;
+    private final int CATCHER_HEIGHT = 20;
+
     public Hook() {
-        super(Constants.WINDOW_WIDTH / 2, 120, Constants.HOOK_SIZE, Constants.HOOK_SIZE);
-        this.moving = true;
-        this.rightDirection = true;
-        this.reeling = false;
-        this.xHeadLine = this.x;
-        this.yHeadLine = this.y + 20;
+        super(HOOK_X, HOOK_Y, HOOK_SIZE, HOOK_SIZE);
+        this.isSwinging = true;
+        this.swingingRightDirection = true;
+        this.isReeling = false;
+        this.xEnd = this.x;
+        this.yEnd = this.y + HOOK_Y_MARGIN;
         this.hitSomething = false;
-       // this.owner = owner;
         this.lootCurrentlyPulling = null;
         hookMovement();
+    }
+
+    public Loot getLootCurrentlyPulling() {
+        return lootCurrentlyPulling;
+    }
+
+    public void setLootCurrentlyPulling(Loot loot) {
+        this.lootCurrentlyPulling = loot;
+    }
+
+    private boolean isOutOfBorder() {
+        return xEnd >= Window.WINDOW_WIDTH || xEnd <= 0 || yEnd >= Window.WINDOW_HEIGHT;
     }
 
     public boolean isOutOfBorder() {
         return xHeadLine >= Constants.WINDOW_WIDTH || xHeadLine <= 0 || yHeadLine >= Constants.WINDOW_HEIGHT;
     }
 
-    public void paintHook(JPanel panel, Graphics g) {
-        Graphics2D g2 = (Graphics2D) g;
-        g2.setStroke(new BasicStroke(5));
-        icon.paintIcon(panel, g, (int) this.xHeadLine - 5, (int) this.yHeadLine);
-        line(g);
-        panel.setDoubleBuffered(true);
-    }
-
-    public void line(Graphics g) {
+    private void line(Graphics g) {
         g.setColor(Color.BLACK);
-        g.drawLine(this.x, this.y, (int) this.xHeadLine, (int) this.yHeadLine);
+        g.drawLine(this.x, this.y, (int) this.xEnd, (int) this.yEnd);
     }
 
-    public void sendHook() {
+    private void sendHook() {
         try {
-            while (this.reeling) {
+            while (this.isReeling) {
                 hitLoot();
                 Utils.sleep(1);
                 if (!hitSomething) {
                     moveHookDownwards();
                 } else {
-                    moveHookForwards((int)((3*this.lootCurrentlyPulling.getWeight() ) / GoldMiner.getStrength()));
+                    moveHookForwards((int) ((3 * this.lootCurrentlyPulling.getWeight()) / GoldMiner.getStrength()));
                 }
                 if (isOutOfBorder()) {
                     moveHookForwards(4);
@@ -63,92 +77,122 @@ public class Hook extends Rectangle {
     }
 
     private void moveHookDownwards() {
-        this.xHeadLine += ((this.xHeadLine - this.x) / (this.yHeadLine - this.y));
-        this.yHeadLine++;
+        this.xEnd += ((this.xEnd - this.x) / (this.yEnd - this.y));
+        this.yEnd++;
         Utils.sleep(2);
     }
+
     private void moveHookForwards(int time) {
-        while (!(this.xHeadLine == this.x && this.yHeadLine == this.y)) {
-            this.xHeadLine -= ((this.xHeadLine - this.x) / (this.yHeadLine - this.y));
-            this.yHeadLine--;
+        while (!(this.xEnd == this.x && this.yEnd == this.y)) {
+            this.xEnd -= ((this.xEnd - this.x) / (this.yEnd - this.y));
+            this.yEnd--;
             Utils.sleep(time);
-            if ((this.xHeadLine <= this.x && this.yHeadLine <= this.y)) {
+            if ((this.xEnd <= this.x && this.yEnd <= this.y)) {
                 this.hitSomething = false;
-                this.reeling = false;
-                this.lootCurrentlyPulling =null;
+                this.isReeling = false;
+                this.lootCurrentlyPulling = null;
                 break;
             }
         }
     }
 
-    public void hookMovement() {
+    private void hookMovement() {
         new Thread(() -> {
             while (true) {
                 sendHook();
-                this.yHeadLine = this.y +15;
-                if (this.moving) {
-                    if (this.rightDirection) {
-                        this.xHeadLine++;
-                        if (this.xHeadLine == this.x + 100) {
-                            this.rightDirection = false;
-                        }
-                    } else {
-                        this.xHeadLine--;
-                        if (this.xHeadLine == this.x - 100) {
-                            this.rightDirection = true;
-                        }
-                    }
-                    Utils.sleep(8);
-                }
+                this.yEnd = this.y + HOOK_Y_MARGIN;
+                hookSwing();
             }
         }).start();
     }
 
+    private void hookSwing() {
+        if (this.isSwinging) {
+            if (this.swingingRightDirection) {
+                this.xEnd++;
+                if (this.xEnd == this.x + HOOK_SWING_MARGIN) {
+                    this.swingingRightDirection = false;
+                }
+            } else {
+                this.xEnd--;
+                if (this.xEnd == this.x - HOOK_SWING_MARGIN) {
+                    this.swingingRightDirection = true;
+                }
+            }
+            Utils.sleep(8);
+        }
+    }
+
     private void dragLoot(Loot loot) {
         new Thread(() -> {
-            loot.x = (int) this.xHeadLine;
-            loot.y = (int) this.yHeadLine;
+            loot.x = (int) this.xEnd;
+            loot.y = (int) this.yEnd;
         }).start();
     }
 
 
     public void setReeling(boolean reeling) {
-        this.reeling = reeling;
+        this.isReeling = reeling;
     }
 
     private void hitLoot() {
         new Thread(() -> {
             try {
                 for (Loot loot : GamePanel.getLootList()) {
-                    if (new Rectangle((int) this.xHeadLine, (int) this.yHeadLine, Constants.HOOK_SIZE, Constants.HOOK_SIZE).intersects(loot)) {
+                    if (new Rectangle((int) this.xEnd, (int) this.yEnd, HOOK_SIZE, HOOK_SIZE).intersects(loot)) {
                         this.hitSomething = true;
                         this.lootCurrentlyPulling = loot;
-                        extracted(loot);
+                        reachToMiner();
                         break;
                     }
                 }
-            }catch (ConcurrentModificationException e){
+            } catch (ConcurrentModificationException e) {
+                e.printStackTrace();
             }
         }).start();
     }
 
-    private void extracted(Loot loot) {
-        while (!(this.xHeadLine <= this.x && this.yHeadLine <= this.y)) {
-            dragLoot(loot);
-            if (new Rectangle(this.x, this.y, 180, 10).intersects(loot)) {
-                GoldMiner.addCurrentMoney((int) ((loot.getMoneyValue() *GoldMiner.getLuck())));
-                GamePanel.getLootList().remove(loot);
-                MusicEffects.playMoneySound();
-                break;
+    private void reachToMiner() {
+        while (!(this.xEnd <= this.x && this.yEnd <= this.y)) {
+            try {
+                if (lootCurrentlyPulling != null) {
+                    dragLoot(lootCurrentlyPulling);
+                    if (new Rectangle(this.x, this.y, CATCHER_WIDTH, CATCHER_HEIGHT).intersects(lootCurrentlyPulling)) {
+                        GoldMiner.addCurrentMoney((int) (lootCurrentlyPulling.getMoneyValue() * GoldMiner.getLuck()));
+                        MusicEffects.playMoneySound();
+                        GamePanel.getLootList().remove(lootCurrentlyPulling);
+                        break;
+                    }
+                }
+            } catch (NullPointerException e) {
             }
         }
     }
-    public void freezeGame(){
-        this.xHeadLine=this.x;
-        this.yHeadLine=this.y+20;
-        this.reeling = false;
-        this.moving = true;
+
+    public void refreshHook() {
+        this.xEnd = this.x;
+        this.yEnd = this.y + HOOK_Y_MARGIN;
+        this.isReeling = false;
+        this.isSwinging = true;
         this.hitSomething = false;
-        this.lootCurrentlyPulling =null;
+        this.lootCurrentlyPulling = null;
     }
+
+    public void freezeHook() {
+        this.xEnd = this.x;
+        this.yEnd = this.y + HOOK_Y_MARGIN;
+        this.isReeling = false;
+        this.isSwinging = false;
+        this.hitSomething = false;
+        this.lootCurrentlyPulling = null;
+    }
+
+    public double getXEnd() {
+        return xEnd;
+    }
+
+    public double getYEnd() {
+        return yEnd;
+    }
+
 }
