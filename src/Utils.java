@@ -3,13 +3,23 @@ import java.awt.*;
 import java.util.Random;
 
 public class Utils {
-    public static boolean checkCollision (Rectangle rect1, Rectangle rect2) {
-        boolean result = false;
-        if (rect1.intersects(rect2)) {
-            result = true;
-        }
-        return result;
-    }
+    private static final int MIN_Y = 180;
+    private static final int MAX_Y = Window.WINDOW_HEIGHT - 150;
+    private static final int MIN_X = 0;
+    private static final int MAX_X = Window.WINDOW_WIDTH - 100;
+    private static final int MIN_MINI_GOLD = 10;
+    private static final int MAX_MINI_GOLD = 31;
+    private static final int MIN_MID_GOLD = 30;
+    private static final int MAX_MID_GOLD = 61;
+    private static final int MIN_BIG_GOLD = 250;
+    private static final int MAX_BIG_GOLD = 501;
+    private static final int MIN_MINI_ROCK = 5;
+    private static final int MAX_MINI_ROCK = 16;
+    private static final int MIN_BIG_ROCK = 25;
+    private static final int MAX_BIG_ROCK = 41;
+    private static final int MIN_DIAMOND = 700;
+    private static final int MAX_DIAMOND = 1001;
+
     public static ImageIcon upscaleImage(String source, int width, int height) {
         return new ImageIcon(new ImageIcon(source).getImage().getScaledInstance(
                 width, height, Image.SCALE_DEFAULT));

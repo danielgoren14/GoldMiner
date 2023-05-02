@@ -47,6 +47,7 @@ public class GamePanel extends JPanel implements KeyListener {
 
 
     public GamePanel() {
+        this.tntUsed = false;
         this.player = new GoldMiner();
         this.hook = new Hook();
         this.addKeyListener(this);
@@ -189,7 +190,7 @@ public class GamePanel extends JPanel implements KeyListener {
     public void countDown() {
         new Thread(() -> {
             while (timeCountDown > 0) {
-                Utils.sleep(1000);
+                Utils.sleep(SECOND);
                 timeCountDown--;
                 if (!this.passLevel()) {
                     this.hook.freezeHook();
@@ -216,6 +217,16 @@ public class GamePanel extends JPanel implements KeyListener {
         } catch (NullPointerException e) {
         } catch (ConcurrentModificationException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void useTNT(Graphics g) {
+        if (player.getTntCount() >= 1 && this.hook.getLootCurrentlyPulling() != null) {
+            kaboom.paintIcon(this, g, this.hook.getLootCurrentlyPulling().x, this.hook.getLootCurrentlyPulling().y);
+            lootList.remove(hook.getLootCurrentlyPulling());
+            hook.setLootCurrentlyPulling(new Loot(0, 0, 0, 0, 0, 0, null));
+            player.lessTNT();
+            this.hook.refreshHook();
         }
     }
 
