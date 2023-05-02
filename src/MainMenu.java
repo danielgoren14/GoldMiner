@@ -26,7 +26,7 @@ public class MainMenu extends JPanel implements KeyListener {
         this.setDoubleBuffered(true);
         this.setLayout(null);
         this.addKeyListener(this);
-        this.setBounds(0, 0, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
+        this.setBounds(0, 0, Window.WINDOW_WIDTH, Window.WINDOW_HEIGHT);
 
         this.startGameButton = new JButton();
         this.startGameButton.setBounds(525, 150, START_BUTTON_WIDTH, START_BUTTON_HEIGHT);

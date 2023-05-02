@@ -64,7 +64,7 @@ public  class Loot extends Rectangle {
     }
 
     public static Loot createDiamond () {
-        return new Loot(Constants.DIAMOND_WEIGHT, Constants.DIAMOND_SIZE, Constants.DIAMOND_SIZE, Utils.randomX(), Utils.randomY(), Utils.randomDiamond(), Constants.DIAMOND_ICON);
+        return new Loot(DIAMOND_WEIGHT, DIAMOND_SIZE, DIAMOND_SIZE, Utils.randomX(), Utils.randomY(), Utils.randomPriceDiamond(), DIAMOND_ICON);
     }
 
     @Override

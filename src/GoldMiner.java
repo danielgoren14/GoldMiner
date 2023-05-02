@@ -56,4 +56,8 @@ public class GoldMiner {
     public boolean canBuy(int cost) {
         return cost < currentMoney;
     }
+
+    public void lessTNT() {
+        tntCount--;
+    }
 }
