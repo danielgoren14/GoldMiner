@@ -191,9 +191,9 @@ public class GamePanel extends JPanel implements KeyListener {
             while (timeCountDown > 0) {
                 Utils.sleep(1000);
                 timeCountDown--;
-                if (!this.gameOver()){
-                    this.hook.freezeGame();
-                    Window.changePanel(Window.shopPanel,this);
+                if (!this.passLevel()) {
+                    this.hook.freezeHook();
+                    Window.changePanel(Window.shopPanel, this);
                     currentLevel++;
                 }
                 if (timeCountDown == 10) {

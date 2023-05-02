@@ -1,6 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.geom.Area;
 import java.util.Random;
 
 public class Utils {

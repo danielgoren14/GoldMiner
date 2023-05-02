@@ -2,6 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
+import static java.awt.event.KeyEvent.*;
+
 public class MainMenu extends JPanel implements KeyListener {
     private JButton startGameButton;
     private JButton instructionsButton;

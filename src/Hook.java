@@ -48,8 +48,12 @@ public class Hook extends Rectangle {
         return xEnd >= Window.WINDOW_WIDTH || xEnd <= 0 || yEnd >= Window.WINDOW_HEIGHT;
     }
 
-    public boolean isOutOfBorder() {
-        return xHeadLine >= Constants.WINDOW_WIDTH || xHeadLine <= 0 || yHeadLine >= Constants.WINDOW_HEIGHT;
+    public void paintHook(JPanel panel, Graphics g) {
+        Graphics2D g2 = (Graphics2D) g;
+        g2.setStroke(new BasicStroke(5));
+        icon.paintIcon(panel, g, (int) this.xEnd - HOOK_SIZE / 2, (int) this.yEnd);
+        line(g);
+        panel.setDoubleBuffered(true);
     }
 
     private void line(Graphics g) {

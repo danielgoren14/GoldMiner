@@ -30,14 +30,13 @@ public  class Loot extends Rectangle {
         return new Loot(MID_GOLD_WEIGHT, MID_GOLD_SIZE, MID_GOLD_SIZE, Utils.randomX(), Utils.randomY(), Utils.randomPriceMidGold() ,MID_GOLD_ICON);
     }
     public static Loot crateBigGold(){
-        return new Loot(Constants.BIG_GOLD_WEIGHT, Constants.BIG_GOLD_SIZE, Constants.BIG_GOLD_SIZE, Utils.randomX(), Utils.randomY(), Utils.randomBigGold() ,Constants.BIG_GOLD_ICON);
+        return new Loot(BIG_GOLD_WEIGHT, BIG_GOLD_SIZE, BIG_GOLD_SIZE, Utils.randomX(), Utils.randomY(), Utils.randomPriceBigGold() ,BIG_GOLD_ICON);
     }
     public static Loot crateBigRock(){
-        return new Loot(Constants.BIG_ROCK_WEIGHT, Constants.BIG_ROCK_SIZE, Constants.BIG_ROCK_SIZE, Utils.randomX(), Utils.randomY(), Utils.randomBigRock() ,Constants.BIG_ROCK_ICON);
-
+        return new Loot(BIG_ROCK_WEIGHT, BIG_ROCK_SIZE, BIG_ROCK_SIZE, Utils.randomX(), Utils.randomY(), Utils.randomPriceBigRock() ,BIG_ROCK_ICON);
     }
     public static Loot crateMiniRock(){
-        return new Loot(Constants.MINI_ROCK_WEIGHT, Constants.MINI_ROCK_SIZE, Constants.MINI_ROCK_SIZE, Utils.randomX(), Utils.randomY(), Utils.randomMiniRock() ,Constants.MINI_ROCK_ICON);
+        return new Loot(MINI_ROCK_WEIGHT, MINI_ROCK_SIZE, MINI_ROCK_SIZE, Utils.randomX(), Utils.randomY(), Utils.randomPriceMiniRock() ,MINI_ROCK_ICON);
     }
     public static Loot createDiamond () {
         return new Loot(Constants.DIAMOND_WEIGHT, Constants.DIAMOND_SIZE, Constants.DIAMOND_SIZE, Utils.randomX(), Utils.randomY(), Utils.randomDiamond(), Constants.DIAMOND_ICON);
