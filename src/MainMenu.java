@@ -21,6 +21,7 @@ public class MainMenu extends JPanel implements KeyListener {
     public static final int INSTRUCTION_WINDOW_X = 200;
     public static final int INSTRUCTION_WINDOW_Y = 100;
     public static final int INSTRUCTION_MARGIN_FROM_UP = 50;
+    public static final int INSTRUCTION_MARGIN = 30;
 
     public MainMenu() {
         this.setDoubleBuffered(true);
@@ -87,10 +88,11 @@ public class MainMenu extends JPanel implements KeyListener {
         graphics.setFont(new Font("Arial", Font.BOLD, 20));
         Utils.drawString(graphics,
                 "Use your claw and reel to mine gold and other treasures underneath the \nground, your claw will swing back and forth. " +
-                        "Press the down arrow to lower it. \nOnce your claw has grabbed something it will begin to reel up . Heavy objects \nlike rocks and large pieces of gold will be harder to reel up." +
-                        "between levels you \ncan buy item that can help you. \n\nCollect the target amount of money by the end of the level , " +
+                        "Press the down arrow to lower it. \nOnce your claw has grabbed something it will begin to reel up .Press the up \n" +
+                        "arrow to use TNT to destroy treasures you dont want .Heavy objects \nlike rocks and large pieces of gold will be harder to reel up." +
+                        "between levels you \ncan buy item that can help you earn more per treasures ,loot it faster or TNT to\nblow it up.\n\nCollect the target amount of money by the end of the level , " +
                         "if you dont meet\nyour end goal ,it is game over, Your money carries with you from one level to\nthe next.",
-                Window.WINDOW_WIDTH / 4 - 65, INSTRUCTION_WINDOW_Y + INSTRUCTION_MARGIN_FROM_UP + 50);
+                INSTRUCTION_WINDOW_X+INSTRUCTION_MARGIN, INSTRUCTION_WINDOW_Y + INSTRUCTION_MARGIN_FROM_UP + INSTRUCTION_MARGIN);
     }
 
     @Override

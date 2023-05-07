@@ -18,7 +18,7 @@ public class GamePanel extends JPanel implements KeyListener {
     private JButton restartGame;
     private boolean tntUsed;
     //---------------finals---------------
-    public static final int GAME_TIME = 40;
+    public static final int GAME_TIME = 60;
     private final int TOP_HEIGHT = 150;
     private final int SECOND = 1000;
     private final int GOLD_MINER_X = 535;
@@ -32,7 +32,7 @@ public class GamePanel extends JPanel implements KeyListener {
     private final int START_X_WINDOW = 0;
     private final int START_Y_WINDOW = 0;
     private final int GAME_OVER_LETTERS_SIZE = 80;
-    private static ImageIcon kaboom = Utils.upscaleImage("src/ObjectPhotos/Kaboom_Effect.png",
+    private static final ImageIcon kaboom = Utils.upscaleImage("src/ObjectPhotos/Kaboom_Effect.png",
             100,
             100);
     private final ImageIcon bottomBackground = Utils.upscaleImage("src/ObjectPhotos/Background.jpg",
@@ -57,7 +57,7 @@ public class GamePanel extends JPanel implements KeyListener {
         this.setVisible(false);
         timeCountDown = Integer.MAX_VALUE;
         this.moneyAmountToPass = MONEY_TARGET;
-        currentLevel = this.START_LEVEL;
+        currentLevel = START_LEVEL;
         newLevel(currentLevel);
 
         this.restartGame = new JButton("RESTART GAME");
@@ -74,11 +74,11 @@ public class GamePanel extends JPanel implements KeyListener {
             this.restartGame.setEnabled(false);
             GamePanel newGame = new GamePanel();
             Shop newShop = new Shop(newGame.player);
-            Window.TheWindow.getContentPane().add(newGame);
-            Window.TheWindow.getContentPane().remove(this);
+            Window.theWindow.getContentPane().add(newGame);
+            Window.theWindow.getContentPane().remove(this);
             Window.gamePanel = newGame;
-            Window.TheWindow.getContentPane().add(newShop);
-            Window.TheWindow.getContentPane().remove(Window.shopPanel);
+            Window.theWindow.getContentPane().add(newShop);
+            Window.theWindow.getContentPane().remove(Window.shopPanel);
             Window.shopPanel = newShop;
             Window.changePanel(newGame, this);
             newGame.timeCountDown = GAME_TIME;
@@ -95,17 +95,15 @@ public class GamePanel extends JPanel implements KeyListener {
         this.topBarBackground.paintIcon(this, g, START_X_WINDOW, START_Y_WINDOW);
         this.bottomBackground.paintIcon(this, g, START_X_WINDOW, TOP_HEIGHT);
         this.player.minerImage.paintIcon(this, g, GOLD_MINER_X, GOLD_MINER_Y);
+        this.hook.paintHook(this, g);
+
+        paintAllLoot(g);
         g.setFont(new Font("Ariel", Font.BOLD, 15));
         Utils.drawString(g, "time : " + timeCountDown + "\ngold : " + player.getCurrentMoney() +
                 "\ntarget goal: " + moneyAmountToPass + "\nTNT : " + player.getTntCount() + "\nlevel : " + currentLevel, GAME_STATS_X, GAME_STATS_Y);
-        this.hook.paintHook(this, g);
-        paintAllLoot(g);
-        if (tntUsed) {
-            System.out.println("hey");
-            useTNT(g);
-            tntUsed = false;
-        }
-        if (passLevel() && timeCountDown == 0) {
+        useTNT(g);
+        Utils.sleep(1);
+        if (failedToPassLevel() && timeCountDown == 0) {
             this.restartGame.setVisible(true);
             this.restartGame.setEnabled(true);
             g.setFont(new Font("Ariel", Font.BOLD, GAME_OVER_LETTERS_SIZE));
@@ -129,17 +127,17 @@ public class GamePanel extends JPanel implements KeyListener {
         }
         lootList.clear();
         switch (level) {
-            case START_LEVEL -> createLoot(5, 4, 3, 4, 2, 0);
+            case START_LEVEL -> createLoot(3, 4, 3, 4, 2, 0);
             case 2 -> {
-                createLoot(4, 3, 3, 3, 4, 0);
+                createLoot(4, 4, 3, 3, 4, 0);
                 nextLevelAdjustment();
             }
             case 3 -> {
-                createLoot(6, 3, 2, 4, 3, 0);
+                createLoot(6, 4, 2, 4, 3, 0);
                 nextLevelAdjustment();
             }
             case 4 -> {
-                createLoot(7, 3, 2, 4, 3, 0);
+                createLoot(7, 3, 2, 4, 3, 1);
                 nextLevelAdjustment();
             }
             case 5 -> {
@@ -155,11 +153,12 @@ public class GamePanel extends JPanel implements KeyListener {
                 nextLevelAdjustment();
             }
             default -> {
-                createLoot(10, 5, 3, 4, 5, 3);
+                createLoot(12, 6, 4, 4, 5, 4);
                 nextLevelAdjustment();
             }
         }
         countDown();
+        Utils.sleep(10);
         this.hook.refreshHook();
     }
 
@@ -192,10 +191,11 @@ public class GamePanel extends JPanel implements KeyListener {
             while (timeCountDown > 0) {
                 Utils.sleep(SECOND);
                 timeCountDown--;
-                if (!this.passLevel()) {
-                    this.hook.freezeHook();
+                if (!this.failedToPassLevel()) {
                     Window.changePanel(Window.shopPanel, this);
                     currentLevel++;
+                    lootList.clear();
+                    this.hook.freezeHook();
                 }
                 if (timeCountDown == 10) {
                     MusicEffects.playTimeSound();
@@ -204,29 +204,34 @@ public class GamePanel extends JPanel implements KeyListener {
         }).start();
     }
 
-    private boolean passLevel() {
+    private boolean failedToPassLevel() {
         return this.moneyAmountToPass > this.player.getCurrentMoney() || timeCountDown != 0;
     }
 
     private void paintAllLoot(Graphics g) {
         try {
-            ArrayList<Loot> temp = lootList;
+            Loot[] temp = getLootList().toArray(new Loot[0]);
             for (Loot loot : temp) {
                 paintItem(g, loot);
             }
-        } catch (NullPointerException e) {
-        } catch (ConcurrentModificationException e) {
+        } catch (NullPointerException | ConcurrentModificationException e) {
             e.printStackTrace();
         }
     }
 
     private void useTNT(Graphics g) {
-        if (player.getTntCount() >= 1 && this.hook.getLootCurrentlyPulling() != null) {
+        if (player.getTntCount() >= 1 && this.hook.getLootCurrentlyPulling() != null && tntUsed) {
+            MusicEffects.playTNTSound();
             kaboom.paintIcon(this, g, this.hook.getLootCurrentlyPulling().x, this.hook.getLootCurrentlyPulling().y);
-            lootList.remove(hook.getLootCurrentlyPulling());
-            hook.setLootCurrentlyPulling(new Loot(0, 0, 0, 0, 0, 0, null));
+            for (int i = getLootList().size() - 1; i >= 0; --i) {
+                if (getLootList().get(i).equals(hook.getLootCurrentlyPulling())) {
+                    getLootList().remove(i);
+                }
+            }
             player.lessTNT();
+            this.hook.getLootCurrentlyPulling().setMoneyValue(0);
             this.hook.refreshHook();
+            tntUsed = false;
         }
     }
 
@@ -235,7 +240,7 @@ public class GamePanel extends JPanel implements KeyListener {
         item.getIcon().paintIcon(this, g, item.x, item.y);
     }
 
-    public static ArrayList<Loot> getLootList() {
+    public synchronized static ArrayList<Loot> getLootList() {
         return lootList;
     }
 
@@ -252,7 +257,6 @@ public class GamePanel extends JPanel implements KeyListener {
                     tntUsed = true;
                 }
             }
-            default -> System.out.println(e.getKeyCode());
         }
     }
 

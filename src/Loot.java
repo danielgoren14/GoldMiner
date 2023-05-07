@@ -4,7 +4,7 @@ import java.awt.*;
 public  class Loot extends Rectangle {
     ImageIcon icon;
     private final int weight;
-    private final int moneyValue;
+    private  int moneyValue;
     //-------------FINALS-------------------------//
     private static final int MINI_GOLD_WEIGHT = 1;
     private static final int MINI_GOLD_SIZE = 15;
@@ -76,6 +76,10 @@ public  class Loot extends Rectangle {
                 ", height=" + height +
                 ", moneyValue=" + moneyValue +
                 '}';
+    }
+
+    public void setMoneyValue(int moneyValue) {
+        this.moneyValue = moneyValue;
     }
 
     public static void overLapping( ){

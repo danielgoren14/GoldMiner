@@ -9,8 +9,7 @@ public class Hook extends Rectangle {
     private boolean hitSomething;
     private double xEnd;
     private double yEnd;
-
-
+    private double xSave;
     private Loot lootCurrentlyPulling;
 
     //------------- FINALS-------------------
@@ -33,16 +32,13 @@ public class Hook extends Rectangle {
         this.yEnd = this.y + HOOK_Y_MARGIN;
         this.hitSomething = false;
         this.lootCurrentlyPulling = null;
-        hookMovement();
+        startHook();
     }
 
     public Loot getLootCurrentlyPulling() {
         return lootCurrentlyPulling;
     }
 
-    public void setLootCurrentlyPulling(Loot loot) {
-        this.lootCurrentlyPulling = loot;
-    }
 
     private boolean isOutOfBorder() {
         return xEnd >= Window.WINDOW_WIDTH || xEnd <= 0 || yEnd >= Window.WINDOW_HEIGHT;
@@ -62,17 +58,18 @@ public class Hook extends Rectangle {
     }
 
     private void sendHook() {
+        this.xSave = this.xEnd;
         try {
             while (this.isReeling) {
-                hitLoot();
+                checkIfHookHitSomething();
                 Utils.sleep(1);
                 if (!hitSomething) {
-                    moveHookDownwards();
+                    reelingHookDown();
                 } else {
-                    moveHookForwards((int) ((3 * this.lootCurrentlyPulling.getWeight()) / GoldMiner.getStrength()));
+                    reelingHookUp((int) ((3 * this.lootCurrentlyPulling.getWeight()) / GoldMiner.getStrength()));
                 }
                 if (isOutOfBorder()) {
-                    moveHookForwards(4);
+                    reelingHookUp(4);
                 }
             }
         } catch (ArithmeticException e) {
@@ -80,31 +77,31 @@ public class Hook extends Rectangle {
         }
     }
 
-    private void moveHookDownwards() {
+    private void reelingHookDown() {
         this.xEnd += ((this.xEnd - this.x) / (this.yEnd - this.y));
         this.yEnd++;
         Utils.sleep(2);
     }
 
-    private void moveHookForwards(int time) {
-        while (!(this.xEnd == this.x && this.yEnd == this.y)) {
+    private void reelingHookUp(int time) {
+        while (!(this.xEnd == this.xSave && this.yEnd == this.y + HOOK_Y_MARGIN)) {
             this.xEnd -= ((this.xEnd - this.x) / (this.yEnd - this.y));
             this.yEnd--;
             Utils.sleep(time);
             if (this.xEnd <= this.xSave && this.yEnd <= this.y + HOOK_Y_MARGIN) {
                 this.hitSomething = false;
                 this.isReeling = false;
-                this.lootCurrentlyPulling = null;
                 break;
             }
         }
     }
 
-    private void hookMovement() {
+    private void startHook() {
         new Thread(() -> {
             while (true) {
                 sendHook();
                 this.yEnd = this.y + HOOK_Y_MARGIN;
+                this.xEnd = this.xSave;
                 hookSwing();
             }
         }).start();
@@ -129,7 +126,7 @@ public class Hook extends Rectangle {
 
     private void dragLoot(Loot loot) {
         new Thread(() -> {
-            loot.x = (int) this.xEnd;
+            loot.x = (int) this.xEnd - (loot.icon.getIconWidth() / 2);
             loot.y = (int) this.yEnd;
         }).start();
     }
@@ -139,14 +136,16 @@ public class Hook extends Rectangle {
         this.isReeling = reeling;
     }
 
-    private void hitLoot() {
+    private void checkIfHookHitSomething() {
         new Thread(() -> {
             try {
                 for (Loot loot : GamePanel.getLootList()) {
                     if (new Rectangle((int) this.xEnd, (int) this.yEnd, HOOK_SIZE, HOOK_SIZE).intersects(loot)) {
                         this.hitSomething = true;
                         this.lootCurrentlyPulling = loot;
-                        reachToMiner();
+                        reelingLootReachedMiner();
+                        Utils.sleep(1);
+                        this.lootCurrentlyPulling = null;
                         break;
                     }
                 }
@@ -156,19 +155,21 @@ public class Hook extends Rectangle {
         }).start();
     }
 
-    private void reachToMiner() {
-        while (!(this.xEnd <= this.x && this.yEnd <= this.y)) {
+    private void reelingLootReachedMiner() {
+        while (!(this.xEnd <= this.xSave && this.yEnd <= this.y + HOOK_Y_MARGIN)) {
             try {
-                if (lootCurrentlyPulling != null) {
-                    dragLoot(lootCurrentlyPulling);
-                    if (new Rectangle(this.x, this.y, CATCHER_WIDTH, CATCHER_HEIGHT).intersects(lootCurrentlyPulling)) {
-                        GoldMiner.addCurrentMoney((int) (lootCurrentlyPulling.getMoneyValue() * GoldMiner.getLuck()));
-                        MusicEffects.playMoneySound();
-                        GamePanel.getLootList().remove(lootCurrentlyPulling);
-                        break;
+                    if (lootCurrentlyPulling != null) {
+                        dragLoot(lootCurrentlyPulling);
+                        if (new Rectangle((int) this.xEnd, this.y + HOOK_Y_MARGIN, CATCHER_WIDTH, CATCHER_HEIGHT).intersects(lootCurrentlyPulling) && lootCurrentlyPulling != null) {
+                            GoldMiner.addCurrentMoney((int) (lootCurrentlyPulling.getMoneyValue() * GoldMiner.getLuck()));
+                            GamePanel.getLootList().remove(lootCurrentlyPulling);
+                            MusicEffects.playMoneySound();
+                            break;
+                        }
                     }
-                }
+
             } catch (NullPointerException e) {
+                e.printStackTrace();
             }
         }
     }
@@ -183,20 +184,10 @@ public class Hook extends Rectangle {
     }
 
     public void freezeHook() {
-        this.xEnd = this.x;
+        this.xEnd = this.xSave;
         this.yEnd = this.y + HOOK_Y_MARGIN;
         this.isReeling = false;
         this.isSwinging = false;
         this.hitSomething = false;
-        this.lootCurrentlyPulling = null;
     }
-
-    public double getXEnd() {
-        return xEnd;
-    }
-
-    public double getYEnd() {
-        return yEnd;
-    }
-
 }

@@ -3,10 +3,10 @@ import java.awt.*;
 import java.util.Random;
 
 public class Utils {
-    private static final int MIN_Y = 180;
-    private static final int MAX_Y = Window.WINDOW_HEIGHT - 150;
-    private static final int MIN_X = 0;
-    private static final int MAX_X = Window.WINDOW_WIDTH - 100;
+    private static final int MIN_Y = 250;
+    private static final int MAX_Y = Window.WINDOW_HEIGHT - 100;
+    private static final int MIN_X = 50;
+    private static final int MAX_X = Window.WINDOW_WIDTH - 75;
     private static final int MIN_MINI_GOLD = 10;
     private static final int MAX_MINI_GOLD = 31;
     private static final int MIN_MID_GOLD = 30;
@@ -34,6 +34,7 @@ public class Utils {
         try {
             Thread.sleep(milSc);
         } catch (InterruptedException e) {
+            e.printStackTrace();
             throw new RuntimeException(e);
         }
     }

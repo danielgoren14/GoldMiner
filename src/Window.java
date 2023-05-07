@@ -2,7 +2,7 @@ import javax.swing.*;
 import java.awt.event.KeyListener;
 
 public class Window extends JFrame {
-    public static Window TheWindow = new Window();
+    public static Window theWindow = new Window();
     public static MainMenu menuPanel;
     public static GamePanel gamePanel;
     public static Shop shopPanel;
@@ -37,12 +37,11 @@ public class Window extends JFrame {
     }
 
     public static void changePanel(JPanel newPanel, JPanel oldPanel) {
-        try {
             newPanel.setVisible(true);
             newPanel.requestFocusInWindow();
-            oldPanel.setVisible(false);
-        } catch (NullPointerException e) {
-        }
+            if (oldPanel!=null){
+                oldPanel.setVisible(false);
+            }
         try {
             changeKeys(newPanel.getKeyListeners()[0]);
         } catch (ArrayIndexOutOfBoundsException e) {
@@ -50,7 +49,7 @@ public class Window extends JFrame {
         }
     }
 
-    public static void changeKeys(KeyListener newKeyListener) {
+    private static void changeKeys(KeyListener newKeyListener) {
         keyListener = newKeyListener;
     }
 

@@ -43,4 +43,8 @@ public class MusicEffects {
         setFile("src/SoundEffects/Time_Ticking_Sound_Effect.wav");
         play();
     }
+    public static void playTNTSound() {
+        setFile("src/SoundEffects/Bomb_Explosion_Sound_Effect.wav");
+        play();
+    }
 }

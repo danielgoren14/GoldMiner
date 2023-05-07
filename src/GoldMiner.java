@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.util.Random;
 
 public class GoldMiner {
     private static int currentMoney;
@@ -13,10 +14,10 @@ public class GoldMiner {
 
     public GoldMiner() {
         this.minerImage = Utils.upscaleImage("src/ObjectPhotos/Gold_Miner.png", MINER_SIZE, MINER_SIZE);
-        this.currentMoney = START_AMOUNT;
-        this.tntCount = 10;
-        this.strength = START_STRENGTH_POWER;
-        this.luck = START_LUCK;
+        currentMoney = START_AMOUNT;
+        tntCount = START_AMOUNT;
+        strength = START_STRENGTH_POWER;
+        luck = START_LUCK;
     }
 
     public static void addCurrentMoney(int amount) {
