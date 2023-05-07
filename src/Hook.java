@@ -22,7 +22,7 @@ public class Hook extends Rectangle {
     private static final int HOOK_SWING_MARGIN = 100;
     private final ImageIcon icon = Utils.upscaleImage("src/ObjectPhotos/Hook.png", HOOK_SIZE, HOOK_SIZE);
     private final int CATCHER_WIDTH = 180;
-    private final int CATCHER_HEIGHT = 20;
+    private final int CATCHER_HEIGHT = 40;
 
     public Hook() {
         super(HOOK_X, HOOK_Y, HOOK_SIZE, HOOK_SIZE);
@@ -91,7 +91,7 @@ public class Hook extends Rectangle {
             this.xEnd -= ((this.xEnd - this.x) / (this.yEnd - this.y));
             this.yEnd--;
             Utils.sleep(time);
-            if ((this.xEnd <= this.x && this.yEnd <= this.y)) {
+            if (this.xEnd <= this.xSave && this.yEnd <= this.y + HOOK_Y_MARGIN) {
                 this.hitSomething = false;
                 this.isReeling = false;
                 this.lootCurrentlyPulling = null;
@@ -173,13 +173,13 @@ public class Hook extends Rectangle {
         }
     }
 
+
     public void refreshHook() {
-        this.xEnd = this.x;
+        this.xEnd = this.xSave;
         this.yEnd = this.y + HOOK_Y_MARGIN;
         this.isReeling = false;
         this.isSwinging = true;
         this.hitSomething = false;
-        this.lootCurrentlyPulling = null;
     }
 
     public void freezeHook() {

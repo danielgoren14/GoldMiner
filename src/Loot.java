@@ -29,7 +29,7 @@ public  class Loot extends Rectangle {
         super(xLocation,yLocation,width,height);
         this.weight = weight;
         this.moneyValue = moneyValue;
-        this.icon=icon;
+        this.icon = icon;
     }
     public int getWeight() {
         return weight;
@@ -66,6 +66,7 @@ public  class Loot extends Rectangle {
     public static Loot createDiamond () {
         return new Loot(DIAMOND_WEIGHT, DIAMOND_SIZE, DIAMOND_SIZE, Utils.randomX(), Utils.randomY(), Utils.randomPriceDiamond(), DIAMOND_ICON);
     }
+
 
     @Override
     public String toString() {
